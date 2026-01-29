@@ -1,0 +1,14 @@
+---
+import Footer from '../components/Footer';
+import IlustracionesContent from '../components/IlustracionesContent';
+import Navbar from '../components/Navbar';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Ilustraciones Personalizadas" description="Ilustraciones personalizadas hechas con amor y dedicación. Retratos de parejas, familias, mascotas y momentos especiales.">
+  <Navbar showBackButton client:load />
+  <main>
+    <IlustracionesContent client:load />
+  </main>
+  <Footer client:visible />
+</Layout>

@@ -1,0 +1,14 @@
+---
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import PapeleriaContent from '../components/PapeleriaContent';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Papelería de Bodas" description="Diseño e ilustración de papelería personalizada para bodas. Invitaciones, save the date, sobres, minutas, seating plan y más.">
+  <Navbar showBackButton client:load />
+  <main>
+    <PapeleriaContent client:load />
+  </main>
+  <Footer client:visible />
+</Layout>

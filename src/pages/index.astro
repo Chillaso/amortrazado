@@ -1,0 +1,26 @@
+---
+import FeaturesSection from '../components/FeaturesSection';
+import Footer from '../components/Footer';
+import GallerySection from '../components/GallerySection';
+import HeroSection from '../components/HeroSection';
+import Navbar from '../components/Navbar';
+import PapeleriaSection from '../components/PapeleriaSection';
+import ProductsSection from '../components/ProductsSection';
+import QuoteSection from '../components/QuoteSection';
+import IlustracionesSection from '../components/IlustracionesSection';
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Inicio">
+  <Navbar client:load />
+  <main>
+    <HeroSection client:load />
+    <PapeleriaSection client:visible />
+    <GallerySection client:visible />
+    <FeaturesSection client:visible />
+    <ProductsSection client:visible />
+    <QuoteSection client:visible />
+    <IlustracionesSection client:visible />
+  </main>
+  <Footer client:visible />
+</Layout>

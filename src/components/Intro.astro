@@ -1,0 +1,73 @@
+---
+import { url } from '../lib/url';
+// A large heading that captions the whole stationery suite, laid out on kraft paper.
+---
+
+<section class="intro" aria-labelledby="intro-title">
+  <div class="intro-text wrap grid">
+    <h2 id="intro-title" class="intro-title" data-reveal>Vuestra historia, en papel</h2>
+    <div class="intro-captions">
+      <p class="small" data-reveal style="--i:1">
+        Papel, ilustración y emoción se unen para dar forma a detalles únicos.
+      </p>
+      <p class="small" data-reveal style="--i:2">
+        Cada pieza se diseña a medida para reflejar vuestra esencia y contar vuestra historia.
+      </p>
+    </div>
+  </div>
+  <figure class="intro-figure">
+    <img
+      src={url('/images/pieces/suite-kraft.webp')}
+      width="1366"
+      height="768"
+      loading="lazy"
+      alt="Papelería completa de una boda sobre papel kraft: invitación, mapa ilustrado, menú y tarjetas de seating plan con flores secas"
+    />
+  </figure>
+</section>
+
+<style>
+  .intro {
+    min-height: 100svh;
+    padding-top: calc(var(--section) / 2);
+    overflow: clip;
+  }
+  .intro-title {
+    font-size: var(--step-display);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+  }
+  .intro-text { align-items: end; row-gap: 1.75rem; }
+  .intro-title { grid-column: 1 / span 8; }
+  .intro-captions {
+    grid-column: 9 / -1;
+    display: flex;
+    gap: 2rem;
+  }
+  .intro-captions p { flex: 1; color: var(--ink); }
+  .intro-figure { margin-top: 2.5rem; }
+  .intro-figure img {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    object-fit: cover;
+    background: var(--surface);
+  }
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .intro-figure img {
+        animation: intro-settle linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 60%;
+      }
+      @keyframes intro-settle { from { transform: scale(1.08); } to { transform: scale(1); } }
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .intro-title { font-size: clamp(2.5rem, 11vw, 3.5rem); }
+    .intro-title, .intro-captions { grid-column: 1 / -1; }
+    .intro-captions { flex-direction: column; gap: 0.5rem; }
+    .intro-captions p { width: auto; max-width: 36ch; font-size: var(--step-body); }
+    .intro-figure img { aspect-ratio: 4 / 5; object-position: 52% 50%; }
+  }
+</style>

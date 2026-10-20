@@ -1,0 +1,135 @@
+---
+import { url } from '../lib/url';
+// The back of the postcard: a scalloped paper panel on the crimson field, with a stamp.
+import { contact } from '../data/contact';
+import StampMark from './StampMark.astro';
+
+const scallops = (n: number) => {
+  const w = 100;
+  let d = `M0 50`;
+  for (let i = 0; i < n; i++) d += ` A50 50 0 0 1 ${(i + 1) * w} 50`;
+  return `${d} Z`;
+};
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer wrap">
+  <div class="card-back">
+    <svg class="scallops wide" viewBox="0 0 1200 50" preserveAspectRatio="none" aria-hidden="true">
+      <path d={scallops(12)} />
+    </svg>
+    <svg class="scallops narrow" viewBox="0 0 600 50" preserveAspectRatio="none" aria-hidden="true">
+      <path d={scallops(6)} />
+    </svg>
+
+    <div class="card-body">
+      <div class="card-message">
+        <p class="sign-off">Con cariño,</p>
+        <p>
+          Amor Trazado. Papelería de boda e ilustraciones hechas con alma, dibujadas a mano pieza a
+          pieza para contar vuestra historia.
+        </p>
+        <ul class="card-nav">
+          <li><a class="link" href={url('/papeleria-bodas/')}>Papelería de boda</a></li>
+          <li><a class="link" href={url('/ilustraciones/')}>Ilustraciones</a></li>
+          <li><a class="link" href={url('/#packs')}>Packs</a></li>
+        </ul>
+      </div>
+
+      <div class="card-address">
+        <figure class="stamp perforated">
+          <img src={url('/images/pieces/grullas.webp')} width="398" height="596" alt="" loading="lazy" />
+        </figure>
+        <ul>
+          <li><a class="link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          <li><a class="link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a class="link" href={contact.instagram} target="_blank" rel="noopener noreferrer">Instagram {contact.instagramHandle}</a></li>
+                  </ul>
+      </div>
+    </div>
+
+    <p class="imprint">
+      <StampMark size={18} />
+      <span>© {year} Amor Trazado · Dibujado e impreso con cariño</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--crimson);
+    padding-block: 6rem 4rem;
+  }
+  .card-back {
+    position: relative;
+    max-width: 68rem;
+    margin-inline: auto;
+    background: var(--paper);
+    padding: clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 3.5rem) 1.5rem;
+  }
+  .scallops {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    width: 100%;
+    height: clamp(1.25rem, 4vw, 3rem);
+    fill: var(--paper);
+  }
+  .scallops.narrow { display: none; }
+
+  .card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem clamp(2rem, 6vw, 6rem);
+    min-height: 18rem;
+  }
+  .sign-off { font-size: var(--step-lead); font-weight: 300; line-height: 1.1; color: var(--crimson); letter-spacing: -0.01em; }
+  .card-message p + p { margin-top: 1rem; max-width: 36ch; font-size: var(--step-body); }
+  .card-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1.75rem; font-size: var(--step-body); }
+
+  .card-address { position: relative; padding-top: 0.25rem; }
+  .stamp {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5.5rem;
+    aspect-ratio: 3 / 4;
+    margin: 0;
+    --r: 3px;
+    background: var(--surface);
+    transform: rotate(3deg);
+    transition: transform 500ms var(--ease-out);
+  }
+  .stamp img { width: 100%; height: 100%; object-fit: cover; }
+  @media (hover: hover) and (pointer: fine) {
+    .card-back:hover .stamp { transform: rotate(-2deg); }
+  }
+  .card-address ul {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 8rem;
+    font-size: var(--step-body);
+  }
+
+  .imprint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    font-size: var(--step-small);
+    color: var(--crimson);
+  }
+
+  @media (max-width: 48rem) {
+    .site-footer { padding-block: 4rem 2rem; }
+    .scallops.wide { display: none; }
+    .scallops.narrow { display: block; }
+    .card-body { grid-template-columns: 1fr; gap: 2.5rem; }
+    .card-address { position: static; }
+    .stamp { width: 4rem; top: 1.75rem; right: 1.25rem; }
+    .card-message { padding-right: 4.5rem; }
+    .card-address ul { margin-top: 0; font-size: var(--step-body); }
+    .imprint { flex-direction: column; text-align: center; }
+  }
+</style>

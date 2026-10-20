@@ -1,0 +1,121 @@
+---
+// The packs, set like a menu: name left, what defines it right, contents beneath.
+const groups = [
+  {
+    name: 'Papelería de boda',
+    items: [
+      {
+        name: 'Invitación',
+        note: 'Hasta 3 revisiones',
+        desc: 'Ilustración y diseño, sobres opcionales, versión digital e impresión, y asesoría de estilo.',
+      },
+      {
+        name: 'Papelería completa',
+        note: 'Revisiones a medida',
+        desc: 'Invitación, sobres, seating plan, minutas, meseros, tarjetas, sello de pareja y capitanes de mesa.',
+      },
+      {
+        name: 'Ilustración y papelería',
+        note: 'Digital e impresa',
+        desc: 'Retrato de la pareja, invitación, sobres y cartelería para el día.',
+      },
+    ],
+  },
+  {
+    name: 'Ilustración',
+    items: [
+      {
+        name: 'Ilustración sencilla',
+        note: '2 revisiones',
+        desc: 'Un retrato o un elemento único, con entrega digital o impresa.',
+      },
+    ],
+  },
+  {
+    name: 'Solo digital',
+    items: [
+      {
+        name: 'Pack digital',
+        note: 'Extra',
+        desc: 'Invitación digital animada, plantillas editables e ilustraciones para redes.',
+      },
+    ],
+  },
+];
+---
+
+<section id="packs" class="packs wrap section" aria-labelledby="packs-title">
+  <div class="packs-grid grid">
+    <div class="packs-head">
+      <h2 id="packs-title" class="head" data-reveal>Packs</h2>
+      <p data-reveal style="--i:1">
+        Cada boda es distinta. Contadme vuestra fecha y cuántas piezas necesitáis, y os preparo un
+        presupuesto cerrado.
+      </p>
+      <a class="button" href="#contacto" data-reveal style="--i:2">Pedir presupuesto</a>
+    </div>
+
+    <div class="menu">
+      {groups.map((g, n) => (
+        <div class={`menu-group g${n}`} data-reveal style={`--i:${n}`}>
+          <h3>{g.name}</h3>
+          <ul>
+            {g.items.map((item) => (
+              <li>
+                <p class="menu-line">
+                  <span class="menu-name">{item.name}</span>
+                  <span class="menu-note">{item.note}</span>
+                </p>
+                <p class="menu-desc">{item.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .packs-grid { align-items: start; row-gap: 3rem; }
+  .packs-head { grid-column: 1 / span 3; }
+  .packs-head p { margin-top: 1.25rem; font-size: var(--step-body); max-width: 28ch; }
+  .packs-head .button { margin-top: 2rem; }
+
+  .menu {
+    grid-column: 5 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 4rem;
+    align-items: start;
+  }
+  .g0 { grid-row: 1 / span 2; }
+  .g1, .g2 { grid-column: 2; }
+  .g2 { margin-top: 3rem; }
+
+  .menu-group h3 {
+    font-size: var(--step-lead);
+    font-weight: 500;
+    color: var(--crimson);
+    letter-spacing: -0.01em;
+  }
+  .menu-group ul { display: grid; gap: 1.6rem; margin-top: 1.4rem; }
+  .menu-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: var(--step-body);
+  }
+  .menu-note { font-size: var(--step-body); text-align: right; white-space: nowrap; }
+  .menu-desc { margin-top: 0.3rem; max-width: 36ch; }
+
+  @media (max-width: 60rem) {
+    .packs-head, .menu { grid-column: 1 / -1; }
+    .menu { grid-template-columns: 1fr; }
+    .g0, .g1, .g2 { grid-column: 1; grid-row: auto; }
+    .g1, .g2 { margin-top: 2.5rem; }
+    .menu-group h3 { font-size: var(--step-lead); }
+    .menu-line { font-size: var(--step-body); }
+  }
+</style>

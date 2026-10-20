@@ -1,0 +1,243 @@
+---
+// The live thing: type your names, date and place, and see them set on an invitation.
+// Without JavaScript the card shows a finished sample and the button opens a plain email.
+const inks = [
+  { id: 'granate', label: 'Granate', value: '#a92b4b' },
+  { id: 'salvia', label: 'Salvia', value: '#5f7d58' },
+  { id: 'rosa', label: 'Rosa', value: '#c0707d' },
+];
+---
+
+<section class="lab wrap section" aria-labelledby="lab-title">
+  <div class="lab-grid grid">
+    <div class="lab-form">
+      <h2 id="lab-title" class="head" data-reveal>Probad vuestra invitación</h2>
+      <p class="lab-intro" data-reveal style="--i:1">
+        Escribid vuestros nombres y mirad cómo quedan. Después lo dibujo a mano, con vuestro lugar y
+        vuestros detalles.
+      </p>
+
+      <form class="fields" data-invite-form data-reveal style="--i:2">
+        <div class="pair">
+          <label>
+            <span>Un nombre</span>
+            <input name="a" type="text" autocomplete="given-name" placeholder="Marina" maxlength="18" />
+          </label>
+          <label>
+            <span>El otro</span>
+            <input name="b" type="text" placeholder="Carlos" maxlength="18" />
+          </label>
+        </div>
+        <label>
+          <span>Fecha de la boda</span>
+          <input name="date" type="date" />
+        </label>
+        <label>
+          <span>Lugar</span>
+          <input name="place" type="text" placeholder="Bodegas Fundador" maxlength="32" />
+        </label>
+        <fieldset class="inks">
+          <legend>Tinta</legend>
+          {inks.map((ink, n) => (
+            <label class="ink">
+              <input type="radio" name="ink" value={ink.value} checked={n === 0} />
+              <span class="swatch" style={`--c:${ink.value}`}></span>
+              <span>{ink.label}</span>
+            </label>
+          ))}
+        </fieldset>
+        <a
+          class="button"
+          data-invite-send
+          href="mailto:hola@amortrazado.com?subject=Invitaci%C3%B3n%20de%20boda"
+        >
+          Quiero una invitación así
+        </a>
+      </form>
+    </div>
+
+    <div class="lab-stage" data-reveal style="--i:1">
+      <article class="card" aria-live="polite" data-invite-card style="--ink-c:#a92b4b">
+        <svg class="sprig" viewBox="0 0 320 70" aria-hidden="true">
+          <g fill="none" stroke="#7a9a73" stroke-width="1.6" stroke-linecap="round">
+            <path d="M20 52 C 80 20, 130 18, 160 34 C 190 18, 240 20, 300 52" />
+            <path d="M60 36 q -6 -14 6 -20 M60 36 q 12 -6 18 2" />
+            <path d="M100 26 q -2 -14 10 -16 M100 26 q 12 0 14 10" />
+            <path d="M220 26 q 2 -14 -10 -16 M220 26 q -12 0 -14 10" />
+            <path d="M260 36 q 6 -14 -6 -20 M260 36 q -12 -6 -18 2" />
+          </g>
+          <g fill="#e2a43a">
+            <circle cx="40" cy="44" r="3" /><circle cx="280" cy="44" r="3" />
+            <circle cx="132" cy="22" r="2.4" /><circle cx="188" cy="22" r="2.4" />
+          </g>
+          <path class="heart" d="M160 46 c -7 -5 -6 -11 -2 -11 c 1.5 0 2 1 2 2 c 0 -1 .5 -2 2 -2 c 4 0 5 6 -2 11 z" />
+        </svg>
+        <p class="card-names">
+          <span data-out="a">Marina</span>
+          <span class="card-amp">y</span>
+          <span data-out="b">Carlos</span>
+        </p>
+        <p class="card-meta">
+          <span data-out="date">12 de octubre de 2025</span>
+          <span data-out="place">Bodegas Fundador</span>
+        </p>
+        <p class="card-foot">Nos casamos y queremos celebrarlo con vosotros</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-invite-form]');
+  const card = document.querySelector<HTMLElement>('[data-invite-card]');
+  const send = document.querySelector<HTMLAnchorElement>('[data-invite-send]');
+
+  if (form && card && send) {
+    const defaults: Record<string, string> = {
+      a: 'Marina',
+      b: 'Carlos',
+      date: '12 de octubre de 2025',
+      place: 'Bodegas Fundador',
+    };
+    const fmt = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const read = () => {
+      const data = new FormData(form);
+      const get = (k: string) => String(data.get(k) ?? '').trim();
+      const rawDate = get('date');
+      return {
+        a: get('a') || defaults.a,
+        b: get('b') || defaults.b,
+        date: rawDate ? fmt.format(new Date(`${rawDate}T12:00:00`)) : defaults.date,
+        place: get('place') || defaults.place,
+        ink: get('ink') || '#a92b4b',
+        typed: Boolean(get('a') || get('b')),
+      };
+    };
+
+    const render = () => {
+      const v = read();
+      for (const key of ['a', 'b', 'date', 'place'] as const) {
+        const el = card.querySelector<HTMLElement>(`[data-out="${key}"]`);
+        if (el && el.textContent !== v[key]) {
+          el.textContent = v[key];
+          el.classList.remove('is-new');
+          void el.offsetWidth;
+          el.classList.add('is-new');
+        }
+      }
+      card.style.setProperty('--ink-c', v.ink);
+      const inkName = form.querySelector<HTMLInputElement>('input[name="ink"]:checked')
+        ?.parentElement?.textContent?.trim();
+      const subject = v.typed ? `Invitación para ${v.a} y ${v.b}` : 'Invitación de boda';
+      const body = [
+        'Hola, nos gustaría una invitación como la que hemos probado en la web:',
+        '',
+        `Nombres: ${v.a} y ${v.b}`,
+        `Fecha: ${v.date}`,
+        `Lugar: ${v.place}`,
+        `Tinta: ${inkName ?? ''}`,
+        '',
+        'Os contamos un poco más de nosotros:',
+      ].join('\n');
+      send.href = `mailto:hola@amortrazado.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    form.addEventListener('input', render);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  }
+</script>
+
+<style>
+  .lab-grid { align-items: start; row-gap: 3rem; }
+  .lab-form { grid-column: 1 / span 5; }
+  .lab-intro { margin-top: 1.25rem; max-width: 38ch; }
+
+  .fields { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .fields label > span:first-child,
+  .inks legend {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: var(--step-small);
+    font-weight: 500;
+  }
+  .fields input[type='text'],
+  .fields input[type='date'] {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0;
+    background: var(--surface);
+    font-size: var(--step-body);
+    transition: background-color var(--t-hover) ease;
+  }
+  .fields input::placeholder { color: var(--muted); opacity: 0.75; }
+  .fields input:focus-visible { background: var(--paper); outline-offset: 0; }
+
+  .inks { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+  .inks legend { padding: 0; }
+  .ink { display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; min-height: 2.75rem; font-size: var(--step-body); }
+  .ink input { position: absolute; opacity: 0; pointer-events: none; }
+  .swatch {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--c);
+    outline: 2px solid transparent;
+    outline-offset: 3px;
+    transition: outline-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
+  }
+  .ink input:checked + .swatch { outline-color: var(--c); }
+  .ink input:focus-visible + .swatch { outline: 2px dashed var(--ink); }
+  .ink:active .swatch { transform: scale(0.9); }
+  .fields .button { justify-self: start; margin-top: 0.75rem; }
+
+  .lab-stage {
+    grid-column: 7 / -1;
+    display: grid;
+    place-items: center;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.25rem, 4vw, 4rem);
+    background: var(--blush);
+    min-height: 100%;
+  }
+  .card {
+    width: min(100%, 25rem);
+    aspect-ratio: 5 / 7;
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    text-align: center;
+    background: var(--paper);
+    color: var(--ink-c);
+    transition: color 400ms ease;
+  }
+  .sprig { width: 82%; }
+  .sprig .heart { fill: var(--ink-c); transition: fill 400ms ease; }
+  .card-names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: min(var(--step-head), 3.5rem);
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+  .card-amp { font-size: 0.55em; font-style: italic; margin: 0.25em 0; color: var(--sage-deep); }
+  .card-meta { display: flex; flex-direction: column; font-size: var(--step-body); color: var(--ink); }
+  .card-foot { font-size: var(--step-small); color: var(--ink); max-width: 22ch; }
+  @media (prefers-reduced-motion: no-preference) {
+    .card .is-new { animation: ink-in 520ms var(--ease-out); }
+    @keyframes ink-in { from { opacity: 0.25; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  }
+
+  @media (max-width: 60rem) {
+    .lab-form, .lab-stage { grid-column: 1 / -1; }
+    .lab-stage { margin-inline: calc(-1 * var(--margin)); }
+  }
+</style>

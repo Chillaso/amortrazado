@@ -1,14 +1,10 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-import react from '@astrojs/react';
-import tailwindcss from '@tailwindcss/vite';
-
 // https://astro.build/config
+// Served from GitHub Pages at https://chillaso.github.io/amortrazado/.
+// For a custom domain later: set `site` to it, remove `base`, and add public/CNAME.
 export default defineConfig({
-  integrations: [react()],
-
-  vite: {
-    plugins: [tailwindcss()]
-  }
+  site: 'https://chillaso.github.io',
+  base: '/amortrazado',
 });

@@ -1,0 +1,49 @@
+---
+import { url } from '../lib/url';
+// One illustration in hand, with the story of why it exists.
+---
+
+<section class="portrait wrap section" aria-labelledby="portrait-title">
+  <div class="portrait-grid grid">
+    <figure class="portrait-figure" data-reveal>
+      <div class="shutter">
+        <img
+          src={url('/images/pieces/retrato-grupo-manos.webp')}
+          width="624"
+          height="628"
+          loading="lazy"
+          alt="Manos sosteniendo una ilustración a acuarela de un grupo de amigos, firmada por Amor Trazado"
+        />
+      </div>
+    </figure>
+    <div class="portrait-text">
+      <h2 id="portrait-title" class="head" data-reveal>Hecha con alma</h2>
+      <p data-reveal style="--i:1">
+        Cada ilustración nace de una historia. Creo piezas personalizadas para acompañar
+        celebraciones, sorprender a alguien especial o guardar un recuerdo bonito solo para ti.
+      </p>
+      <p data-reveal style="--i:2">
+        Me envías tus fotos favoritas, me cuentas qué os hace únicos y lo dibujo a mano. La recibes
+        en digital o impresa, lista para enmarcar.
+      </p>
+      <a class="button" href="#contacto" data-reveal style="--i:3">Encargar una ilustración</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .portrait { background: var(--crimson); color: var(--paper); }
+  .portrait-grid { align-items: center; row-gap: 2.5rem; }
+  .portrait-figure { grid-column: 1 / span 6; margin: 0; }
+  .portrait-figure img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+  .portrait-text { grid-column: 8 / -1; }
+  .portrait-text p { margin-top: 1.25rem; max-width: 38ch; }
+  .portrait-text .button { margin-top: 2rem; background: var(--paper); color: var(--crimson); }
+  @media (hover: hover) and (pointer: fine) {
+    .portrait-text .button:hover { background: var(--blush); }
+  }
+  @media (max-width: 48rem) {
+    .portrait-figure, .portrait-text { grid-column: 1 / -1; }
+    .portrait-figure { margin-inline: calc(-1 * var(--margin)); }
+  }
+</style>

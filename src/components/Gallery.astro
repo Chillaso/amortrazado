@@ -1,0 +1,113 @@
+---
+import { url } from '../lib/url';
+// Illustrations gathered round a heading, each drifting at its own rate.
+interface Props {
+  linkHref?: string;
+  linkLabel?: string;
+  title?: string;
+}
+const { linkHref = '#contacto', linkLabel = 'Encargar una ilustración', title = 'Ilustraciones personalizadas' } = Astro.props;
+
+const pieces = [
+  { src: 'ilus-baile', w: 466, h: 341, alt: 'Ilustración de una pareja abrazada, ella con falda roja levantando un pie', x: 2, y: 4, rate: 10 },
+  { src: 'ilus-beso', w: 278, h: 341, alt: 'Ilustración de una pareja besándose, él con chistera', x: 31, y: 0, rate: 6, near: true },
+  { src: 'ilus-invierno', w: 439, h: 539, alt: 'Ilustración de una pareja con gorros de lana y abrigos de invierno', x: 72, y: 8, rate: 12 },
+  { src: 'ilus-perro', w: 175, h: 341, alt: 'Ilustración de un bulldog francés marrón tumbado', x: 0, y: 64, rate: 8 },
+  { src: 'ilus-novios', w: 276, h: 341, alt: 'Ilustración de unos novios, ella con ramo y él con chaqué azul', x: 60, y: 72, rate: 5, near: true },
+  { src: 'ilus-grupo', w: 276, h: 341, alt: 'Ilustración a acuarela de un grupo de amigos haciéndose una foto', x: 82, y: 60, rate: 9 },
+  { src: 'retrato-novios-marco', w: 520, h: 740, alt: 'Retrato ilustrado de unos novios dentro de un marco ondulado granate', x: 24, y: 76, rate: 7 },
+];
+---
+
+<section id="ilustraciones" class="gallery wrap" aria-labelledby="gallery-title">
+  <div class="cluster">
+    {pieces.map((p, n) => (
+      <figure
+        class={`bit b${n}`}
+        style={`--x:${p.x}%; --y:${p.y}%; --rate:${p.rate}%`}
+      >
+        <img src={url(`/images/pieces/${p.src}.webp`)} width={p.w} height={p.h} alt={p.alt} loading="lazy" />
+      </figure>
+    ))}
+
+    <div class="gallery-text">
+      <h2 id="gallery-title" class="gallery-title" data-reveal>{title}</h2>
+      <p data-reveal style="--i:1">
+        Retratos de pareja, de familia, de amigos o de quien os acompaña a cuatro patas. Un regalo
+        lleno de significado, hecho para quedarse en casa.
+      </p>
+      <a class="link gallery-link" href={linkHref} data-reveal style="--i:2">{linkLabel}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery { padding-block: calc(var(--section) / 2); }
+  .cluster {
+    position: relative;
+    max-width: 50rem;
+    min-height: min(100svh, 52rem);
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+  }
+  .gallery-text {
+    position: relative;
+    z-index: 1;
+    max-width: 24rem;
+    text-align: center;
+    background: var(--bg);
+    padding: 1.5rem 1rem;
+  }
+  .gallery-title {
+    font-size: var(--step-lead);
+    line-height: 1.05;
+  }
+  .gallery-text p { margin-top: 1rem; font-size: var(--step-body); }
+  .gallery-link { display: inline-block; margin-top: 1.25rem; font-weight: 500; color: var(--crimson); }
+
+  .bit {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: clamp(8.5rem, 13vw, 11.5rem);
+    aspect-ratio: 9 / 10;
+    margin: 0;
+    background: #f6f3f3;
+  }
+  .bit img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+  .b2 { width: clamp(9.5rem, 15vw, 13rem); }
+  .b3 img, .b6 img { object-fit: contain; }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .bit {
+        animation: bit-drift linear both;
+        animation-timeline: view();
+        animation-range: cover 0% cover 100%;
+      }
+      @keyframes bit-drift {
+        from { transform: translateY(calc(var(--rate) * 1)); }
+        to { transform: translateY(calc(var(--rate) * -1)); }
+      }
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .cluster {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      row-gap: 1rem;
+    }
+    .bit { position: static; width: auto; }
+    .b0 { grid-column: 1 / span 3; grid-row: 1; }
+    .b1 { grid-column: 6 / span 3; grid-row: 1; margin-top: 2.5rem; }
+    .b2 { display: none; }
+    .gallery-text { grid-column: 1 / -1; grid-row: 2; padding-block: 1rem; }
+    .b3 { grid-column: 2 / span 3; grid-row: 3; }
+    .b4 { grid-column: 8 / span 3; grid-row: 3; margin-top: 2rem; }
+    .b5 { grid-column: 5 / span 3; grid-row: 4; }
+    .b6 { display: none; }
+  }
+</style>

@@ -1,0 +1,157 @@
+---
+import { url } from '../lib/url';
+// Staggered tiles of real pieces, with empty cells; the heading and the full list sit in one of them.
+interface Props {
+  title?: string;
+}
+const { title = 'Papelería para bodas' } = Astro.props;
+const items = [
+  'Invitaciones personalizadas',
+  'Save the date',
+  'Sobres ilustrados',
+  'Mapas ilustrados',
+  'Programas de boda',
+  'Minutas',
+  'Seating plan',
+  'Meseros y capitanes de mesa',
+  'Sellos o insignias de pareja',
+  'Tarjetas de agradecimiento',
+];
+
+const tiles = [
+  {
+    cls: 't1 wide field-blush',
+    src: '/images/pieces/pieza-invitacion.webp',
+    w: 384, h: 540,
+    alt: 'Invitación de Marina y Carlos con el mapa ilustrado de Bodegas Fundador',
+    name: 'Invitación y mapa', kind: 'Marina y Carlos',
+  },
+  {
+    cls: 't2 single',
+    src: '/images/pieces/menu-mesa.webp',
+    w: 397, h: 596,
+    alt: 'Minuta ilustrada «Menú de bodas» sobre una mesa de madera junto a una vela',
+    name: 'Minuta en mesa', kind: 'Menú de bodas',
+  },
+  {
+    cls: 't3 single',
+    src: '/images/pieces/seating-calabazas.webp',
+    w: 555, h: 657,
+    alt: 'Tarjeta de mesa «Robledal» entre calabazas, ciruelas y eucalipto',
+    name: 'Mesero', kind: 'Mesa Robledal',
+  },
+  {
+    cls: 't4 single',
+    src: '/images/pieces/mesa-frutas.webp',
+    w: 397, h: 596,
+    alt: 'Seating plan colocado entre macetas de flores, uvas y calabazas en una mesa al aire libre',
+    name: 'Seating plan', kind: 'Entre flores y fruta',
+  },
+  {
+    cls: 't5 single field-crimson',
+    src: '/images/pieces/pieza-menu.webp',
+    w: 258, h: 522,
+    alt: 'Minuta ilustrada con entrante, plato principal y postre, y un dibujo de la mesa del banquete',
+    name: 'Minuta', kind: 'Menú ilustrado',
+  },
+  {
+    cls: 't6 wide field-sage',
+    src: '/images/pieces/pieza-seating.webp',
+    w: 382, h: 538,
+    alt: 'Cuatro tarjetas de seating plan con nombres de mesa y flores silvestres',
+    name: 'Tarjetas de mesa', kind: 'Green Way, Griebal y más',
+  },
+];
+---
+
+<section id="papeleria" class="work wrap section" aria-labelledby="work-title">
+  <div class="work-grid">
+    <div class="work-head">
+      <h2 id="work-title" class="head" data-reveal>{title}</h2>
+      <p class="work-intro" data-reveal style="--i:1">
+        Diseño e ilustro cada pieza de forma personalizada, para que todas cuenten una misma historia:
+        la vuestra.
+      </p>
+      <ul class="work-list" data-reveal style="--i:2">
+        {items.map((i) => <li>{i}</li>)}
+      </ul>
+    </div>
+
+    {tiles.map((t, n) => (
+      <figure class={`tile ${t.cls}`} data-reveal style={`--i:${n % 2}`}>
+        <div class="tile-media">
+          <img src={url(t.src)} width={t.w} height={t.h} alt={t.alt} loading="lazy" />
+        </div>
+        <figcaption class="small">
+          <span>{t.name}</span>
+          <span class="muted">{t.kind}</span>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3.5rem 1rem;
+    align-items: start;
+  }
+  .work-head { grid-column: 3; grid-row: 1; }
+  .work-head .head { font-size: min(var(--step-head), 4vw); }
+  .work-intro { margin-top: 1.25rem; font-size: var(--step-body); }
+  .work-list {
+    margin-top: 1.5rem;
+    line-height: 1.7;
+  }
+
+  .tile { margin: 0; }
+  .tile-media { overflow: hidden; background: var(--surface); }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+  .single .tile-media { aspect-ratio: 4 / 5; }
+  .wide .tile-media { aspect-ratio: 3 / 2; }
+  [class*='field-'] .tile-media { padding: 9% 12%; }
+  [class*='field-'] img { object-fit: contain; }
+  .field-blush .tile-media { background: var(--blush); }
+  .field-sage .tile-media { background: var(--sage); }
+  .field-crimson .tile-media { background: var(--crimson); }
+  .tile figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .tile:hover img { transform: scale(1.035); }
+  }
+
+  .t1 { grid-column: 1 / span 2; grid-row: 1; }
+  .t2 { grid-column: 4; grid-row: 1; margin-top: 6rem; }
+  .t3 { grid-column: 2; grid-row: 2; }
+  .t4 { grid-column: 3; grid-row: 2; margin-top: 4rem; }
+  .t5 { grid-column: 1; grid-row: 3; margin-top: 3rem; }
+  .t6 { grid-column: 3 / span 2; grid-row: 3; }
+
+  @media (max-width: 60rem) {
+    .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 0.625rem; }
+    .work-head { grid-column: 1 / -1; grid-row: auto; }
+    .work-head .head { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+    .work-list { columns: 2; column-gap: 1rem; }
+    .t1, .t6 { grid-column: 1 / -1; grid-row: auto; margin-top: 0; }
+    .t2, .t3, .t4, .t5 { grid-row: auto; margin-top: 0; }
+    .t2 { grid-column: 2; }
+    .t3 { grid-column: 1; }
+    .t4 { grid-column: 2; margin-top: 3rem; }
+    .t5 { grid-column: 1; }
+    .tile figcaption { flex-direction: column; gap: 0; }
+  }
+  @media (max-width: 30rem) {
+    .work-list { columns: 1; }
+  }
+</style>

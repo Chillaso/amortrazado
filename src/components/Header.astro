@@ -1,0 +1,100 @@
+---
+import { url } from '../lib/url';
+import StampMark from './StampMark.astro';
+
+const links = [
+  { href: url('/#papeleria'), label: 'Papelería' },
+  { href: url('/#ilustraciones'), label: 'Ilustraciones' },
+  { href: url('/#proceso'), label: 'Cómo trabajo' },
+  { href: url('/#packs'), label: 'Packs' },
+];
+---
+
+<header class="site-header wrap">
+  <a class="brand" href={url('/')} aria-label="Amor Trazado, inicio">
+    <StampMark size={34} class="brand-mark" />
+    <span>Amor Trazado</span>
+  </a>
+
+  <nav class="nav" aria-label="Principal">
+    <ul class="nav-list">
+      {links.map((l) => <li><a class="link nav-link" href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </nav>
+
+  <a class="button header-action" href={url('/#contacto')}>Pedir presupuesto</a>
+
+  <details class="nav-phone">
+    <summary>Menú</summary>
+    <ul>
+      {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      <li><a href={url('/#contacto')}>Contacto</a></li>
+    </ul>
+  </details>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 5.5rem;
+    font-size: var(--step-body);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--crimson);
+    text-decoration: none;
+    font-size: var(--step-body);
+    letter-spacing: -0.01em;
+    font-weight: 500;
+  }
+  .brand :global(.brand-mark) { transition: transform 600ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .brand:hover :global(.brand-mark) { transform: rotate(-8deg); }
+  }
+  .nav-list { display: flex; gap: clamp(1.25rem, 2.6vw, 2.5rem); }
+  .nav-link { text-decoration-color: transparent; }
+  .header-action { min-height: 2.75rem; }
+
+  .nav-phone { display: none; position: relative; }
+  .nav-phone summary {
+    list-style: none;
+    cursor: pointer;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1rem;
+    background: var(--surface);
+    font-weight: 500;
+  }
+  .nav-phone summary::-webkit-details-marker { display: none; }
+  .nav-phone[open] summary { background: var(--ink); color: var(--bg); }
+  .nav-phone ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    min-width: 14rem;
+    padding: 0.5rem 0;
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .nav-phone a {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    text-decoration: none;
+    font-size: var(--step-body);
+  }
+  .nav-phone a:active { background: var(--crimson); }
+
+  @media (max-width: 60rem) {
+    .nav, .header-action { display: none; }
+    .nav-phone { display: block; }
+    .site-header { min-height: 4.5rem; }
+  }
+</style>

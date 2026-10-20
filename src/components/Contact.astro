@@ -1,0 +1,60 @@
+---
+import { url } from '../lib/url';
+import { contact } from '../data/contact';
+---
+
+<section id="contacto" class="contact wrap" aria-labelledby="contact-title">
+  <h2 id="contact-title" class="sr-only">Contacto</h2>
+  <div class="contact-grid grid">
+    <p class="contact-sentence lead" data-reveal>
+      Escribidme para vuestra invitación, la papelería de la boda o una ilustración para regalar.
+    </p>
+
+    <figure class="contact-picture perforated" data-reveal style="--i:1">
+      <img
+        src={url('/images/pieces/retrato-novios-marco.webp')}
+        width="520"
+        height="740"
+        loading="lazy"
+        alt="Retrato ilustrado de unos novios"
+      />
+    </figure>
+
+    <div class="contact-links" data-reveal style="--i:2">
+      <p class="contact-question">¿Tenéis ya fecha?</p>
+      <ul>
+        <li><a class="link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        <li><a class="link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a></li>
+        <li><a class="link" href={contact.instagram} target="_blank" rel="noopener noreferrer">Instagram {contact.instagramHandle}</a></li>
+      </ul>
+      <p class="small muted">Diseño a distancia para bodas de toda España. Respondo en uno o dos días.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact { padding-block: 10rem 7.5rem; }
+  .contact-grid { align-items: start; row-gap: 2rem; }
+  .contact-sentence { grid-column: 1 / span 6; max-width: 26ch; }
+  .contact-picture {
+    grid-column: 8 / span 2;
+    margin: 0;
+    width: 100%;
+    max-width: 10.5rem;
+    aspect-ratio: 1;
+    --r: 3.5px;
+  }
+  .contact-picture img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+  .contact-links { grid-column: 10 / -1; }
+  .contact-question { font-size: var(--step-body); font-weight: 500; }
+  .contact-links ul { display: grid; gap: 0.5rem; margin-top: 1.25rem; font-size: var(--step-body); }
+  .contact-links ul a { display: inline-block; padding-block: 0.2rem; overflow-wrap: anywhere; }
+  .contact-links .small { margin-top: 1.25rem; max-width: 30ch; }
+
+  @media (max-width: 60rem) {
+    .contact { padding-block: 7rem 5rem; }
+    .contact-sentence { grid-column: 1 / -1; }
+    .contact-picture { grid-column: 1 / span 3; max-width: 7rem; }
+    .contact-links { grid-column: 4 / -1; padding-left: 0.5rem; }
+  }
+</style>

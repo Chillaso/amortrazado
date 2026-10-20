@@ -1,12 +1,20 @@
 ---
 import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { url } from '../lib/url';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Papelería de boda e ilustraciones personalizadas hechas con alma' } = Astro.props;
+const {
+  title,
+  description = 'Papelería de boda e ilustraciones personalizadas, dibujadas a mano y hechas con alma.',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url('/images/pieces/suite-kraft.webp'), Astro.site);
 ---
 
 <!doctype html>
@@ -16,13 +24,58 @@ const { title, description = 'Papelería de boda e ilustraciones personalizadas 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#a92b4b" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | Amor Trazado`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_ES" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link href="https://api.fontshare.com/v2/css?f[]=sentient@300,400,500,300i&display=swap" rel="stylesheet" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{title} | Amor Trazado</title>
   </head>
-  <body class="min-h-screen bg-white">
-    <slot />
+  <body>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <Header />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-in'));
+      }
+    </script>
   </body>
 </html>
+
+<style is:global>
+  .skip {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 50;
+    padding: 0.75rem 1rem;
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .skip:focus { top: 1rem; }
+</style>

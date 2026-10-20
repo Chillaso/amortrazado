@@ -1,0 +1,144 @@
+---
+// The process printed like a wedding programme: a paper slip on a sage field.
+const stages = [
+  {
+    when: 'Primero',
+    rows: [
+      ['Me contáis vuestra historia', 'Videollamada o mensajes'],
+      ['Propuesta de estilo y presupuesto', 'Por escrito'],
+    ],
+  },
+  {
+    when: 'Después',
+    rows: [
+      ['Boceto a mano de cada pieza', 'Ilustración'],
+      ['Color, textos y ajustes', 'Hasta 3 revisiones'],
+    ],
+  },
+  {
+    when: 'Al final',
+    rows: [
+      ['Papeles y acabados cuidados', 'Alta calidad'],
+      ['Impresión y entrega', 'Digital o impresa'],
+    ],
+  },
+];
+---
+
+<section id="proceso" class="process" aria-labelledby="process-title">
+  <div class="process-grid grid wrap">
+    <div class="process-text">
+      <h2 id="process-title" class="head" data-reveal>Cómo trabajo</h2>
+      <p data-reveal style="--i:1">
+        Todo se crea con cariño y coherencia, para que cada ilustración forme parte de una misma
+        historia.
+      </p>
+      <p data-reveal style="--i:2">
+        Si lo necesitáis, también me encargo de la impresión, con papeles de alta calidad y acabados
+        cuidados al detalle.
+      </p>
+    </div>
+
+    <div class="slip" data-reveal style="--i:1">
+      <p class="slip-title">Programa</p>
+      {stages.map((s) => (
+        <div class="slip-group">
+          <h3>{s.when}</h3>
+          <dl>
+            {s.rows.map(([what, detail]) => (
+              <div class="slip-row">
+                <dt>{what}</dt>
+                <span class="leader" aria-hidden="true"></span>
+                <dd>{detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
+      <p class="slip-total">
+        <span>Lista para el gran día</span>
+        <span>Pieza a pieza</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process {
+    background: var(--sage);
+    padding-block: calc(var(--section) * 0.6);
+  }
+  .process-grid { align-items: start; row-gap: 3rem; }
+  .process-text { grid-column: 1 / span 5; }
+  .process-text p { margin-top: 1.25rem; max-width: 34ch; }
+  .process-text p + p { margin-top: 1rem; }
+
+  .slip {
+    grid-column: 7 / -1;
+    max-width: 34rem;
+    width: 100%;
+    background: var(--paper);
+    padding: 2.25rem 2rem 4rem;
+    font-size: var(--step-body);
+    font-variant-numeric: tabular-nums;
+    clip-path: polygon(
+      0 0, 100% 0, 100% calc(100% - 14px),
+      95% 100%, 90% calc(100% - 14px), 85% 100%, 80% calc(100% - 14px), 75% 100%,
+      70% calc(100% - 14px), 65% 100%, 60% calc(100% - 14px), 55% 100%, 50% calc(100% - 14px),
+      45% 100%, 40% calc(100% - 14px), 35% 100%, 30% calc(100% - 14px), 25% 100%,
+      20% calc(100% - 14px), 15% 100%, 10% calc(100% - 14px), 5% 100%, 0 calc(100% - 14px)
+    );
+  }
+  .slip-title {
+    font-size: var(--step-lead);
+    font-weight: 300;
+    color: var(--crimson);
+    text-align: center;
+  }
+  .slip-group h3 {
+    margin-top: 1.75rem;
+    font-size: var(--step-body);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+  .slip dl { margin-top: 0.5rem; display: grid; gap: 0.6rem; }
+  .slip-row { display: flex; align-items: baseline; gap: 0.5rem; }
+  .slip-row dt { flex: 0 1 auto; }
+  .slip-total span:last-child { white-space: nowrap; }
+  .slip-row dd { flex: 0 0 auto; color: var(--muted); text-align: right; }
+  .leader {
+    flex: 1 1 1.5rem;
+    min-width: 1.5rem;
+    height: 4px;
+    align-self: center;
+    margin-top: 0.4em;
+    background-image: radial-gradient(circle, var(--ink) 1.6px, transparent 2px); /* taste-skill-ignore: round dot leader */
+    background-size: 9px 4px;
+    background-repeat: repeat-x;
+    opacity: 0.55;
+  }
+  .slip-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.25rem -2rem 0;
+    min-height: 2.75rem;
+    padding: 0.5rem 2rem;
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  @media (max-width: 60rem) {
+    .process-text, .slip { grid-column: 1 / -1; }
+    .slip { max-width: none; padding-inline: 1.25rem; }
+    .slip-total { margin-inline: -1.25rem; padding-inline: 1.25rem; }
+  }
+  @media (max-width: 30rem) {
+    .slip-row { flex-direction: column; align-items: flex-start; gap: 0; }
+    .slip-row .leader { display: none; }
+    .slip-row dd { text-align: left; font-size: var(--step-small); }
+    .slip-total { flex-direction: column; align-items: flex-start; gap: 0; padding-block: 0.75rem; }
+  }
+</style>

@@ -1,23 +1,20 @@
 ---
-import { url } from '../lib/url';
 import Contact from '../components/Contact.astro';
-import Gallery from '../components/Gallery.astro';
 import Hero from '../components/Hero.astro';
-import InvitationLab from '../components/InvitationLab.astro';
-import Intro from '../components/Intro.astro';
+import Ilustraciones from '../components/Ilustraciones.astro';
 import Packs from '../components/Packs.astro';
+import Papeleria from '../components/Papeleria.astro';
 import Process from '../components/Process.astro';
-import Work from '../components/Work.astro';
+import Statement from '../components/Statement.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Papelería de boda e ilustraciones">
   <Hero />
-  <Intro />
-  <Work />
-  <InvitationLab />
+  <Papeleria />
+  <Statement />
   <Process />
   <Packs />
-  <Gallery linkHref={url('/ilustraciones/')} linkLabel="Ver más ilustraciones" />
+  <Ilustraciones />
   <Contact />
 </Layout>

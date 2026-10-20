@@ -1,10 +1,8 @@
 ---
 import Contact from '../components/Contact.astro';
-import InvitationLab from '../components/InvitationLab.astro';
-import PageIntro from '../components/PageIntro.astro';
 import Packs from '../components/Packs.astro';
+import Papeleria from '../components/Papeleria.astro';
 import Process from '../components/Process.astro';
-import Work from '../components/Work.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
@@ -12,19 +10,7 @@ import Layout from '../layouts/Layout.astro';
   title="Papelería de boda"
   description="Diseño e ilustración de papelería personalizada para bodas: invitaciones, save the date, sobres, minutas, seating plan, meseros y más."
 >
-  <PageIntro
-    title="Papelería de boda ilustrada"
-    text="Invitaciones, mapas, minutas, seating plan y cada detalle para los invitados, diseñados e ilustrados a mano para que todo cuente vuestra historia."
-    action={{ href: '#packs', label: 'Ver los packs' }}
-    image={{
-      src: '/images/pieces/invitacion-mesa.webp',
-      width: 617,
-      height: 628,
-      alt: 'Invitación de Marina y Carlos y mapa ilustrado de la celebración, con sobre verde salvia',
-    }}
-  />
-  <Work title="Todas las piezas" />
-  <InvitationLab />
+  <Papeleria level="h1" />
   <Process />
   <Packs />
   <Contact />

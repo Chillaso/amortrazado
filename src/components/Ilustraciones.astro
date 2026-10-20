@@ -1,0 +1,104 @@
+---
+import { url } from '../lib/url';
+// Custom portraits hung close together, the way they end up on a wall at home.
+interface Props {
+  level?: 'h1' | 'h2';
+}
+const { level = 'h2' } = Astro.props;
+const Heading = level;
+
+const img = (name: string) => url(`/images/pieces/${name}.webp`);
+---
+
+<section id="ilustraciones" class="ilus wrap section" aria-labelledby="ilus-title">
+  <div class="grid ilus-grid">
+    <div class="ilus-text">
+      <Heading id="ilus-title" class={level === 'h1' ? 'page-title' : 'head'}>
+        Ilustraciones personalizadas
+      </Heading>
+      <p class="ilus-lead">
+        Si buscáis un regalo especial, personalizado y lleno de significado, habéis llegado al lugar
+        indicado.
+      </p>
+      <p>
+        Cada ilustración nace de una historia: una pareja, una familia, un grupo de amigos o quien
+        os acompaña a cuatro patas. Me enviáis vuestras fotos favoritas, me contáis qué os hace
+        únicos y lo dibujo a mano. La recibís en digital o impresa, <span data-annotate="underline">lista para enmarcar</span>.
+      </p>
+      <a class="button" href="#contacto">Encargar una ilustración</a>
+    </div>
+
+    <div class="wall" data-swing-group role="group" aria-label="Ilustraciones de ejemplo">
+      <figure data-swing class="print w-baile" style="--tilt:-1.5deg">
+        <img src={img('ilus-baile')} width="466" height="341" loading="lazy" alt="Ilustración de una pareja abrazada, ella con falda roja levantando un pie" />
+      </figure>
+      <figure data-swing class="print w-novios" style="--tilt:1.2deg">
+        <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:35%; width:5rem; --tape-tilt:3deg"></span>
+        <img src={img('retrato-novios-marco')} width="520" height="740" loading="lazy" alt="Retrato ilustrado de unos novios dentro de un marco ondulado granate" />
+      </figure>
+      <figure data-swing class="print w-beso" style="--tilt:2deg">
+        <img src={img('ilus-beso')} width="278" height="341" loading="lazy" alt="Ilustración de una pareja besándose, él con chistera" />
+      </figure>
+      <figure data-swing class="print w-perro" style="--tilt:-3deg">
+        <img src={img('ilus-perro')} width="175" height="341" loading="lazy" alt="Ilustración de un bulldog francés marrón tumbado" />
+        <figcaption class="note">también peludos</figcaption>
+      </figure>
+      <figure data-swing class="print w-invierno" style="--tilt:-1deg">
+        <img src={img('ilus-invierno')} width="439" height="539" loading="lazy" alt="Ilustración de una pareja con gorros de lana y abrigos de invierno" />
+      </figure>
+      <figure data-swing class="print w-grupo" style="--tilt:1.8deg">
+        <img src={img('ilus-grupo')} width="276" height="341" loading="lazy" alt="Ilustración a acuarela de un grupo de amigos haciéndose una foto" />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ilus { background: var(--surface); }
+  .ilus-grid { align-items: center; row-gap: 3rem; }
+  .ilus-text { grid-column: 1 / span 4; }
+  .page-title { font-size: var(--step-display); line-height: 0.98; letter-spacing: -0.03em; }
+  .ilus-text p { margin-top: 1.25rem; max-width: 38ch; }
+  .ilus-text .ilus-lead { margin-top: 1.5rem; font-size: var(--step-lead); line-height: 1.3; }
+  .ilus-text .button { margin-top: 2rem; }
+
+  .wall {
+    grid-column: 6 / -1;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+    max-width: 46rem;
+    width: 100%;
+    justify-self: end;
+  }
+  .wall .print { background: #fff; }
+  .wall img { object-fit: cover; }
+  .w-baile { grid-column: 1 / span 3; grid-row: 1; align-self: end; }
+  .w-baile img { aspect-ratio: 466 / 341; }
+  .w-novios { grid-column: 4 / span 3; grid-row: 1 / span 2; }
+  .w-novios img { aspect-ratio: 520 / 740; }
+  .w-beso { grid-column: 1 / span 2; grid-row: 2; }
+  .w-beso img { aspect-ratio: 278 / 341; }
+  .w-perro { grid-column: 3; grid-row: 2; align-self: center; }
+  .w-perro img { aspect-ratio: 175 / 280; object-position: 50% 65%; }
+  .w-perro figcaption { font-size: 1.1rem; text-align: center; padding-inline: 0; }
+  .w-invierno { grid-column: 2 / span 2; grid-row: 3; margin-top: -0.5rem; }
+  .w-invierno img { aspect-ratio: 439 / 539; }
+  .w-grupo { grid-column: 4 / span 2; grid-row: 3; }
+  .w-grupo img { aspect-ratio: 276 / 341; }
+
+  @media (max-width: 64rem) {
+    .ilus-text, .wall { grid-column: 1 / -1; }
+    .ilus-text { max-width: 40rem; }
+    .wall { justify-self: center; }
+  }
+  @media (max-width: 36rem) {
+    .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.85rem; }
+    .w-novios { grid-column: 1 / -1; grid-row: auto; max-width: 20rem; justify-self: center; }
+    .w-baile { grid-column: 1 / -1; grid-row: auto; }
+    .w-beso, .w-perro, .w-invierno, .w-grupo { grid-column: auto; grid-row: auto; margin: 0; }
+    .w-perro { align-self: stretch; }
+    .w-perro img { aspect-ratio: 278 / 341; }
+  }
+</style>

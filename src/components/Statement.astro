@@ -1,0 +1,77 @@
+---
+// One sentence on crimson, inside the wavy hand-drawn frame from the brand's illustrations.
+const wave = (w: number, h: number, step = 22, amp = 5) => {
+  const pts: string[] = [];
+  const edge = (x0: number, y0: number, x1: number, y1: number, nx: number, ny: number) => {
+    const len = Math.hypot(x1 - x0, y1 - y0);
+    const n = Math.max(2, Math.round(len / step));
+    for (let i = 0; i < n; i++) {
+      const t = i / n;
+      const o = i % 2 ? amp : -amp;
+      pts.push(`${(x0 + (x1 - x0) * t + nx * o).toFixed(1)} ${(y0 + (y1 - y0) * t + ny * o).toFixed(1)}`);
+    }
+  };
+  const m = amp + 2;
+  edge(m, m, w - m, m, 0, 1);
+  edge(w - m, m, w - m, h - m, 1, 0);
+  edge(w - m, h - m, m, h - m, 0, 1);
+  edge(m, h - m, m, m, 1, 0);
+  // Smooth the zigzag into a wave with a closed Catmull-Rom-ish curve
+  const p = pts.map((s) => s.split(' ').map(Number));
+  let d = `M${p[0][0]} ${p[0][1]}`;
+  for (let i = 0; i < p.length; i++) {
+    const a = p[(i - 1 + p.length) % p.length], b = p[i], c = p[(i + 1) % p.length], e = p[(i + 2) % p.length];
+    const c1 = [b[0] + (c[0] - a[0]) / 6, b[1] + (c[1] - a[1]) / 6];
+    const c2 = [c[0] - (e[0] - b[0]) / 6, c[1] - (e[1] - b[1]) / 6];
+    d += ` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${c[0]} ${c[1]}`;
+  }
+  return d;
+};
+---
+
+<section class="statement wrap" aria-labelledby="statement-title">
+  <div class="frame">
+    <svg class="wave wave-wide" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true" data-draw>
+      <path pathLength="1" d={wave(1200, 420)} />
+    </svg>
+    <svg class="wave wave-narrow" viewBox="0 0 400 520" preserveAspectRatio="none" aria-hidden="true" data-draw>
+      <path pathLength="1" d={wave(400, 520, 20, 4)} />
+    </svg>
+    <h2 id="statement-title" class="statement-title">Historias que se dibujan con amor</h2>
+    <p class="statement-text">
+      Cada trazo está pensado para reflejar vuestra esencia y convertir un momento especial en
+      <span data-annotate="underline" data-color="#ffffff" data-delay="900">un recuerdo para siempre</span>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .statement {
+    background: var(--crimson);
+    color: #fff;
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+  .frame {
+    position: relative;
+    max-width: 66rem;
+    margin-inline: auto;
+    padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.75rem, 7vw, 6rem);
+    text-align: center;
+  }
+  .wave {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .wave path { fill: none; stroke: #fff; stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+  .wave-narrow { display: none; }
+  .statement-title { position: relative; font-size: var(--step-head); }
+  .statement-text { position: relative; margin: 1.5rem auto 0; max-width: 44ch; font-size: var(--step-lead); line-height: 1.35; font-weight: 300; }
+
+  @media (max-width: 40rem) {
+    .wave-wide { display: none; }
+    .wave-narrow { display: block; }
+  }
+</style>

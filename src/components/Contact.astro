@@ -1,60 +1,364 @@
 ---
 import { url } from '../lib/url';
 import { contact } from '../data/contact';
+
+const services = [
+  { value: 'invitaciones', label: 'Invitaciones' },
+  { value: 'papeleria-completa', label: 'Papelería completa' },
+  { value: 'ilustracion', label: 'Ilustración personalizada' },
+  { value: 'otro', label: 'Otra cosa' },
+];
+const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200', 'Aún no lo sé'];
 ---
 
-<section id="contacto" class="contact wrap" aria-labelledby="contact-title">
-  <h2 id="contact-title" class="sr-only">Contacto</h2>
-  <div class="contact-grid grid">
-    <p class="contact-sentence lead" data-reveal>
-      Escribidme para vuestra invitación, la papelería de la boda o una ilustración para regalar.
-    </p>
-
-    <figure class="contact-picture perforated" data-reveal style="--i:1">
-      <img
-        src={url('/images/pieces/retrato-novios-marco.webp')}
-        width="520"
-        height="740"
-        loading="lazy"
-        alt="Retrato ilustrado de unos novios"
-      />
-    </figure>
-
-    <div class="contact-links" data-reveal style="--i:2">
-      <p class="contact-question">¿Tenéis ya fecha?</p>
-      <ul>
+<section id="contacto" class="contact wrap section" aria-labelledby="contact-title">
+  <div class="grid contact-grid">
+    <div class="contact-side">
+      <h2 id="contact-title" class="head">¿Hablamos?</h2>
+      <p class="contact-lead">
+        Contadme qué tenéis en mente y os respondo con ideas y un presupuesto, normalmente en
+        <span data-annotate="highlight" data-color="#f6f3f2">uno o dos días</span>.
+      </p>
+      <p class="contact-alt">Si lo preferís, también podéis escribirme directamente:</p>
+      <ul class="contact-links">
         <li><a class="link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
-        <li><a class="link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">Escribir por WhatsApp</a></li>
+        <li><a class="link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
         <li><a class="link" href={contact.instagram} target="_blank" rel="noopener noreferrer">Instagram {contact.instagramHandle}</a></li>
       </ul>
-      <p class="small muted">Diseño a distancia para bodas de toda España. Respondo en uno o dos días.</p>
+      <figure class="print contact-print" style="--tilt:-3deg" data-drop>
+        <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:30%; width:4.5rem"></span>
+        <img
+          src={url('/images/pieces/retrato-grupo-manos.webp')}
+          width="624"
+          height="628"
+          loading="lazy"
+          alt="Manos sosteniendo una ilustración a acuarela de un grupo de amigos"
+        />
+        <figcaption class="note">un regalo para los amigos de siempre</figcaption>
+      </figure>
+    </div>
+
+    <div class="letter">
+      <span class="tape" style="top:-0.7rem; left:8%; --tape-tilt:-5deg"></span>
+      <span class="tape" style="--tape:var(--sage); top:-0.7rem; right:8%; --tape-tilt:6deg"></span>
+
+      <form
+        class="form"
+        data-contact-form
+        action={`mailto:${contact.email}`}
+        method="post"
+        enctype="text/plain"
+        novalidate
+      >
+        <p class="form-intro">Los campos marcados con <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> son obligatorios.</p>
+
+        <div class="row two">
+          <div class="field">
+            <label for="cf-name">Nombre <span aria-hidden="true">*</span></label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error" />
+            <p class="error" id="cf-name-error" data-error-for="name"></p>
+          </div>
+          <div class="field">
+            <label for="cf-email">Email <span aria-hidden="true">*</span></label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" required aria-describedby="cf-email-error" />
+            <p class="error" id="cf-email-error" data-error-for="email"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cf-phone">Teléfono <span class="optional">(opcional, si preferís que os llame)</span></label>
+          <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+        </div>
+
+        <fieldset class="field services" aria-describedby="cf-services-error">
+          <legend>¿Qué necesitáis? <span aria-hidden="true">*</span></legend>
+          <div class="chips">
+            {services.map((s) => (
+              <label class="chip">
+                <input type="checkbox" name="services" value={s.value} />
+                <span>{s.label}</span>
+              </label>
+            ))}
+          </div>
+          <p class="error" id="cf-services-error" data-error-for="services"></p>
+        </fieldset>
+
+        <div class="row three">
+          <div class="field">
+            <label for="cf-date">Fecha del evento</label>
+            <input id="cf-date" name="eventDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="cf-location">Lugar o ciudad</label>
+            <input id="cf-location" name="location" type="text" autocomplete="address-level2" />
+          </div>
+          <div class="field">
+            <label for="cf-guests">Invitados</label>
+            <select id="cf-guests" name="guests">
+              <option value="">Elegid una opción</option>
+              {guests.map((g) => <option value={g}>{g}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="cf-message">Contadme vuestra idea <span aria-hidden="true">*</span></label>
+          <textarea
+            id="cf-message"
+            name="message"
+            rows="5"
+            required
+            minlength="10"
+            aria-describedby="cf-message-hint cf-message-error"
+          ></textarea>
+          <p class="hint" id="cf-message-hint">Estilo, colores, qué piezas os gustaría, cualquier detalle de vuestra historia.</p>
+          <p class="error" id="cf-message-error" data-error-for="message"></p>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="cf-website">No rellenar</label>
+          <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="field consent">
+          <label class="check">
+            <input type="checkbox" name="consent" required aria-describedby="cf-consent-error" />
+            <span>Acepto que Amor Trazado use estos datos solo para responder a mi consulta. <span aria-hidden="true">*</span></span>
+          </label>
+          <p class="error" id="cf-consent-error" data-error-for="consent"></p>
+        </div>
+
+        <p class="form-alert" role="alert" data-form-alert hidden></p>
+
+        <button class="button submit" type="submit" data-submit>Enviar mensaje</button>
+      </form>
+
+      <div class="sent" data-sent hidden tabindex="-1">
+        <svg class="sent-check" viewBox="0 0 64 56" aria-hidden="true" data-draw-on-sent>
+          <path pathLength="1" d="M6 30 C 12 34, 18 40, 24 50 C 32 32, 44 16, 60 4" />
+        </svg>
+        <p class="sent-title">¡Mensaje enviado!</p>
+        <p data-sent-text>Gracias por escribir. Os respondo en uno o dos días.</p>
+        <button class="link sent-again" type="button" data-again>Enviar otra consulta</button>
+      </div>
     </div>
   </div>
 </section>
 
-<style>
-  .contact { padding-block: 10rem 7.5rem; }
-  .contact-grid { align-items: start; row-gap: 2rem; }
-  .contact-sentence { grid-column: 1 / span 6; max-width: 26ch; }
-  .contact-picture {
-    grid-column: 8 / span 2;
-    margin: 0;
-    width: 100%;
-    max-width: 10.5rem;
-    aspect-ratio: 1;
-    --r: 3.5px;
-  }
-  .contact-picture img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
-  .contact-links { grid-column: 10 / -1; }
-  .contact-question { font-size: var(--step-body); font-weight: 500; }
-  .contact-links ul { display: grid; gap: 0.5rem; margin-top: 1.25rem; font-size: var(--step-body); }
-  .contact-links ul a { display: inline-block; padding-block: 0.2rem; overflow-wrap: anywhere; }
-  .contact-links .small { margin-top: 1.25rem; max-width: 30ch; }
+<script>
+  import { sendContactRequest } from '../lib/contact-api';
 
-  @media (max-width: 60rem) {
-    .contact { padding-block: 7rem 5rem; }
-    .contact-sentence { grid-column: 1 / -1; }
-    .contact-picture { grid-column: 1 / span 3; max-width: 7rem; }
-    .contact-links { grid-column: 4 / -1; padding-left: 0.5rem; }
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const sent = document.querySelector<HTMLElement>('[data-sent]');
+  const alertBox = document.querySelector<HTMLElement>('[data-form-alert]');
+  const submit = document.querySelector<HTMLButtonElement>('[data-submit]');
+
+  if (form && sent && alertBox && submit) {
+    const messages: Record<string, string> = {
+      name: 'Escribid vuestro nombre.',
+      email: 'Escribid un email válido, por ejemplo nombre@correo.com.',
+      services: 'Elegid al menos una opción.',
+      message: 'Contadme un poco más (al menos 10 caracteres).',
+      consent: 'Necesito vuestro permiso para poder responderos.',
+    };
+
+    const showError = (field: string, text: string) => {
+      const out = form.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+      if (out) out.textContent = text;
+      const inputs = form.querySelectorAll<HTMLInputElement>(`[name="${field}"]`);
+      inputs.forEach((i) => i.setAttribute('aria-invalid', text ? 'true' : 'false'));
+      form.querySelector(`[data-error-for="${field}"]`)?.closest('.field')?.classList.toggle('has-error', Boolean(text));
+    };
+
+    const validate = () => {
+      const data = new FormData(form);
+      const get = (k: string) => String(data.get(k) ?? '').trim();
+      const errors: Record<string, string> = {};
+      if (!get('name')) errors.name = messages.name;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(get('email'))) errors.email = messages.email;
+      if (data.getAll('services').length === 0) errors.services = messages.services;
+      if (get('message').length < 10) errors.message = messages.message;
+      if (!data.get('consent')) errors.consent = messages.consent;
+      for (const f of Object.keys(messages)) showError(f, errors[f] ?? '');
+      return { data, get, errors };
+    };
+
+    // Once a field has been flagged, clear its message as soon as it is fixed
+    form.addEventListener('input', (e) => {
+      const name = (e.target as HTMLInputElement).name;
+      if (form.querySelector(`[data-error-for="${name}"]`)?.textContent) validate();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.hidden = true;
+      const { data, get, errors } = validate();
+      const first = Object.keys(messages).find((f) => errors[f]);
+      if (first) {
+        form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+        return;
+      }
+
+      const name = get('name');
+      const email = get('email');
+      const showSent = () => {
+        const text = sent.querySelector<HTMLElement>('[data-sent-text]');
+        if (text) text.textContent = `Gracias, ${name}. Os respondo en uno o dos días a ${email}.`;
+        form.hidden = true;
+        sent.hidden = false;
+        sent.focus();
+        document.dispatchEvent(new CustomEvent('contact:sent'));
+      };
+
+      // Bots fill the hidden field; pretend it worked and send nothing
+      if (get('website')) return showSent();
+
+      submit.disabled = true;
+      submit.textContent = 'Enviando…';
+      const result = await sendContactRequest({
+        name,
+        email,
+        phone: get('phone') || undefined,
+        services: data.getAll('services').map(String),
+        eventDate: get('eventDate') || undefined,
+        location: get('location') || undefined,
+        guests: get('guests') || undefined,
+        message: get('message'),
+        consent: true,
+      });
+      submit.disabled = false;
+      submit.textContent = 'Enviar mensaje';
+
+      if (result.ok) {
+        form.reset();
+        showSent();
+      } else {
+        alertBox.textContent =
+          'No se ha podido enviar el mensaje. Revisad la conexión e intentadlo de nuevo, o escribidme a hola@amortrazado.com.';
+        alertBox.hidden = false;
+      }
+    });
+
+    sent.querySelector('[data-again]')?.addEventListener('click', () => {
+      sent.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLElement>('input')?.focus();
+    });
+  }
+</script>
+
+<style>
+  .contact { background: var(--blush); }
+  .contact-grid { align-items: start; row-gap: 3rem; }
+  .contact-side { grid-column: 1 / span 4; }
+  .contact-lead { margin-top: 1.25rem; max-width: 34ch; }
+  .contact-alt { margin-top: 1.75rem; font-size: var(--step-small); }
+  .contact-links { display: grid; gap: 0.35rem; margin-top: 0.5rem; }
+  .contact-links a { display: inline-block; padding-block: 0.2rem; overflow-wrap: anywhere; }
+  .contact-print { width: min(15rem, 70%); margin-top: 3rem; padding-bottom: 0.3rem; }
+  .contact-print img { aspect-ratio: 1; }
+  .contact-print figcaption { font-size: 1.2rem; text-align: center; color: var(--ink); }
+
+  .letter {
+    grid-column: 6 / -1;
+    position: relative;
+    background: var(--paper);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgb(46 27 33 / 0.1), 0 24px 50px -30px rgb(46 27 33 / 0.45);
+    rotate: 0.4deg;
+  }
+
+  .form { display: grid; gap: 1.4rem; }
+  .form-intro { font-size: var(--step-small); color: var(--muted); }
+  .row { display: grid; gap: 1.4rem 1rem; }
+  .row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .field { display: grid; gap: 0.4rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+  .field label, .field legend {
+    font-size: var(--step-small);
+    font-weight: 600;
+    font-variation-settings: 'SOFT' 50, 'WONK' 0;
+    padding: 0;
+  }
+  .optional { font-weight: 400; color: var(--muted); }
+  .field input[type='text'],
+  .field input[type='email'],
+  .field input[type='tel'],
+  .field input[type='date'],
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--bg);
+    border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
+    border-radius: 10px 4px 9px 5px / 4px 9px 5px 10px;
+    font-size: 1rem;
+    transition: border-color 160ms ease, background-color 160ms ease;
+  }
+  .field textarea { resize: vertical; min-height: 8rem; line-height: 1.5; }
+  .field :is(input, select, textarea):focus-visible {
+    outline: none;
+    border-color: var(--crimson);
+    background: #fff;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--crimson) 18%, transparent);
+  }
+  .field [aria-invalid='true'] { border-color: var(--crimson); }
+  .hint { font-size: 0.875rem; color: var(--muted); }
+  .error { font-size: 0.875rem; color: var(--crimson); font-weight: 600; min-height: 0; }
+  .error:empty { display: none; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.2rem; }
+  .chip { position: relative; cursor: pointer; }
+  .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.35rem 1.1rem;
+    border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
+    border-radius: var(--cut);
+    font-size: 1rem;
+    font-weight: 400;
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .chip input:checked + span { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+  .chip input:focus-visible + span { outline: 2px solid var(--crimson); outline-offset: 3px; }
+  .has-error .chip span { border-color: var(--crimson); }
+
+  .check { display: flex; gap: 0.7rem; align-items: flex-start; font-weight: 400 !important; cursor: pointer; }
+  .check input { width: 1.25rem; height: 1.25rem; margin: 0.15rem 0 0; accent-color: var(--crimson); flex: none; }
+
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .form-alert {
+    padding: 0.9rem 1rem;
+    background: color-mix(in srgb, var(--crimson) 10%, #fff);
+    border-left: 4px solid var(--crimson);
+    font-size: var(--step-small);
+  }
+  .submit { justify-self: start; min-width: 12rem; }
+
+  .sent { padding-block: 2rem; text-align: center; outline: none; }
+  .sent-check { width: 4.5rem; margin: 0 auto 1rem; overflow: visible; }
+  .sent-check path { fill: none; stroke: var(--sage-deep); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+  .sent-title { font-family: var(--hand); font-size: 3rem; line-height: 1; color: var(--crimson); }
+  .sent p + p { margin-top: 1rem; }
+  .sent-again { margin-top: 1.5rem; font-size: 1rem; }
+
+  @media (max-width: 64rem) {
+    .contact-side, .letter { grid-column: 1 / -1; }
+    .contact-side { display: grid; grid-template-columns: 1fr auto; column-gap: 2rem; }
+    .contact-side > :not(.contact-print) { grid-column: 1; }
+    .contact-print { grid-column: 2; grid-row: 1 / span 5; align-self: center; width: 12rem; margin-top: 0; }
+    .letter { rotate: 0deg; }
+  }
+  @media (max-width: 40rem) {
+    .contact-side { display: block; }
+    .contact-print { display: none; }
+    .row.two, .row.three { grid-template-columns: 1fr; }
+    .submit { justify-self: stretch; }
   }
 </style>

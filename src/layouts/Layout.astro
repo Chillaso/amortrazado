@@ -31,10 +31,18 @@ const ogImage = new URL(url('/images/pieces/suite-kraft.webp'), Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content="es_ES" />
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
-    <link href="https://api.fontshare.com/v2/css?f[]=sentient@300,400,500,300i&display=swap" rel="stylesheet" />
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('fx');
+        setTimeout(() => { if (!window.__fx) document.documentElement.classList.remove('fx'); }, 3000);
+      }
+    </script>
     <title>{title} | Amor Trazado</title>
   </head>
   <body>
@@ -44,26 +52,10 @@ const ogImage = new URL(url('/images/pieces/suite-kraft.webp'), Astro.site);
       <slot />
     </main>
     <Footer />
-
     <script>
-      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
-      if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(
-          (entries) => {
-            for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('is-in');
-                io.unobserve(e.target);
-              }
-            }
-          },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
-        );
-        els.forEach((el) => io.observe(el));
-      } else {
-        els.forEach((el) => el.classList.add('is-in'));
-      }
+      import '../scripts/handmade';
     </script>
+
   </body>
 </html>
 

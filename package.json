@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.17.0"
+    "astro": "^5.17.0",
+    "motion": "13.5.1",
+    "rough-notation": "0.5.1"
   }
 }

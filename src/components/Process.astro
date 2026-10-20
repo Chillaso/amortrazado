@@ -28,18 +28,20 @@ const stages = [
 <section id="proceso" class="process" aria-labelledby="process-title">
   <div class="process-grid grid wrap">
     <div class="process-text">
-      <h2 id="process-title" class="head" data-reveal>Cómo trabajo</h2>
-      <p data-reveal style="--i:1">
+      <h2 id="process-title" class="head">Cómo trabajo</h2>
+      <p>
         Todo se crea con cariño y coherencia, para que cada ilustración forme parte de una misma
         historia.
       </p>
-      <p data-reveal style="--i:2">
-        Si lo necesitáis, también me encargo de la impresión, con papeles de alta calidad y acabados
+      <p>
+        Si lo necesitáis, <span data-annotate="underline" data-color="#a92b4b">también me encargo de la impresión</span>, con papeles de alta calidad y acabados
         cuidados al detalle.
       </p>
     </div>
 
-    <div class="slip" data-reveal style="--i:1">
+    <div class="slip-slot">
+    <div class="slip" data-print>
+      <span class="tape" style="--tape:var(--blush); top:0; left:50%; translate:-50% 0; --tape-tilt:-3deg"></span>
       <p class="slip-title">Programa</p>
       {stages.map((s) => (
         <div class="slip-group">
@@ -60,6 +62,7 @@ const stages = [
         <span>Pieza a pieza</span>
       </p>
     </div>
+    </div>
   </div>
 </section>
 
@@ -70,14 +73,21 @@ const stages = [
   }
   .process-grid { align-items: start; row-gap: 3rem; }
   .process-text { grid-column: 1 / span 5; }
-  .process-text p { margin-top: 1.25rem; max-width: 34ch; }
+  .process-text p { margin-top: 1.25rem; max-width: 36ch; }
   .process-text p + p { margin-top: 1rem; }
 
-  .slip {
+  .slip-slot {
     grid-column: 7 / -1;
+    overflow: clip;
+    padding: 0.75rem 0.75rem 1.5rem;
+    margin: -0.75rem -0.75rem -1.5rem;
+  }
+  .slip {
     max-width: 34rem;
     width: 100%;
+    position: relative;
     background: var(--paper);
+    rotate: 1deg;
     padding: 2.25rem 2rem 4rem;
     font-size: var(--step-body);
     font-variant-numeric: tabular-nums;
@@ -90,15 +100,17 @@ const stages = [
     );
   }
   .slip-title {
-    font-size: var(--step-lead);
-    font-weight: 300;
+    font-family: var(--hand);
+    font-size: 2.25rem;
+    line-height: 1;
     color: var(--crimson);
     text-align: center;
   }
   .slip-group h3 {
     margin-top: 1.75rem;
     font-size: var(--step-body);
-    font-weight: 500;
+    font-weight: 600;
+    font-variation-settings: 'SOFT' 50, 'WONK' 0;
     letter-spacing: 0;
     line-height: 1.4;
   }
@@ -113,7 +125,7 @@ const stages = [
     height: 4px;
     align-self: center;
     margin-top: 0.4em;
-    background-image: radial-gradient(circle, var(--ink) 1.6px, transparent 2px); /* taste-skill-ignore: round dot leader */
+    background-image: radial-gradient(circle, var(--ink) 1.6px, transparent 2px);
     background-size: 9px 4px;
     background-repeat: repeat-x;
     opacity: 0.55;
@@ -131,8 +143,9 @@ const stages = [
   }
 
   @media (max-width: 60rem) {
-    .process-text, .slip { grid-column: 1 / -1; }
-    .slip { max-width: none; padding-inline: 1.25rem; }
+    .process-text, .slip-slot { grid-column: 1 / -1; }
+    .slip-slot { justify-self: center; width: min(100%, 37.5rem); }
+    .slip { max-width: 36rem; padding-inline: 1.25rem; justify-self: center; rotate: 0.5deg; }
     .slip-total { margin-inline: -1.25rem; padding-inline: 1.25rem; }
   }
   @media (max-width: 30rem) {

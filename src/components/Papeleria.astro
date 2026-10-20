@@ -1,0 +1,128 @@
+---
+import { url } from '../lib/url';
+// What the stationery covers, beside a small pile of prints from real weddings.
+interface Props {
+  level?: 'h1' | 'h2';
+}
+const { level = 'h2' } = Astro.props;
+const Heading = level;
+
+const items = [
+  'Invitaciones personalizadas',
+  'Save the date',
+  'Sobres ilustrados',
+  'Mapas ilustrados',
+  'Programas de boda',
+  'Minutas',
+  'Seating plan',
+  'Meseros y capitanes de mesa',
+  'Sellos o insignias de pareja',
+  'Tarjetas de agradecimiento',
+];
+---
+
+<section id="papeleria" class="papeleria wrap section" aria-labelledby="papeleria-title">
+  <div class="grid papeleria-grid">
+    <div class="papeleria-text">
+      <Heading id="papeleria-title" class={level === 'h1' ? 'page-title' : 'head'}>
+        Papelería para bodas
+      </Heading>
+      <p class="papeleria-intro">
+        Cada boda está llena de pequeños detalles que la hacen única. Diseño e ilustro cada pieza a
+        medida, para que todas cuenten <span data-annotate="highlight" data-color="#e8cbbf">una misma historia: la vuestra</span>.
+      </p>
+      <ul class="checks papeleria-list">
+        {items.map((i) => <li>{i}</li>)}
+      </ul>
+      <p class="papeleria-print">
+        Si lo necesitáis, también me encargo de la impresión, con papeles de alta calidad y acabados
+        cuidados al detalle.
+      </p>
+    </div>
+
+    <div class="pile" data-pile aria-label="Piezas de papelería en bodas reales" role="group">
+      <figure data-drop class="print p-menu" style="--tilt:-3deg">
+        <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:28%; width:5rem"></span>
+        <img
+          src={url('/images/pieces/menu-mesa.webp')}
+          width="397"
+          height="596"
+          loading="lazy"
+          alt="Minuta ilustrada «Menú de bodas» sobre una mesa de madera junto a una vela"
+        />
+      </figure>
+      <figure data-drop class="print p-mesero" style="--tilt:2.5deg">
+        <span class="tape" style="top:-0.7rem; right:18%; width:5rem; --tape-tilt:7deg"></span>
+        <img
+          src={url('/images/pieces/seating-calabazas.webp')}
+          width="555"
+          height="657"
+          loading="lazy"
+          alt="Tarjeta de mesa «Robledal» entre calabazas, ciruelas y eucalipto"
+        />
+      </figure>
+      <figure data-drop class="print p-seating" style="--tilt:-1deg">
+        <span class="tape" style="--tape:var(--blush); top:-0.6rem; left:8%; width:4.5rem; --tape-tilt:-10deg"></span>
+        <img
+          src={url('/images/pieces/mesa-frutas.webp')}
+          width="397"
+          height="596"
+          loading="lazy"
+          alt="Seating plan colocado entre macetas de flores, uvas y calabazas en una mesa al aire libre"
+        />
+      </figure>
+      <p data-float="20" class="note pile-note n1" aria-hidden="true">la minuta</p>
+      <p data-float="20" class="note pile-note n2" aria-hidden="true">mesa Robledal</p>
+      <p data-float="20" class="note pile-note n3" aria-hidden="true">seating plan entre fruta</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .papeleria-grid { align-items: center; row-gap: 3rem; }
+  .papeleria-text { grid-column: 1 / span 5; }
+  .page-title { font-size: var(--step-display); line-height: 0.98; letter-spacing: -0.03em; }
+  .papeleria-intro { margin-top: 1.5rem; max-width: 40ch; }
+  .papeleria-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem 1.5rem;
+    margin-top: 2rem;
+    line-height: 1.35;
+  }
+  .papeleria-print { margin-top: 2rem; max-width: 40ch; color: var(--muted); font-size: var(--step-small); }
+
+  .pile {
+    grid-column: 7 / -1;
+    position: relative;
+    aspect-ratio: 1 / 1.02;
+    max-width: 42rem;
+    width: 100%;
+    justify-self: end;
+  }
+  .pile .print { position: absolute; }
+  .p-menu { left: 0; top: 4%; width: 44%; }
+  .p-menu img { aspect-ratio: 2 / 3; }
+  .p-mesero { right: 0; top: 0; width: 46%; }
+  .p-mesero img { aspect-ratio: 5 / 6; }
+  .p-seating { left: 30%; bottom: 0; width: 38%; z-index: 1; }
+  .p-seating img { aspect-ratio: 4 / 5; }
+
+  .pile-note { position: absolute; font-size: 1.35rem; }
+  .n1 { left: 2%; bottom: 18%; rotate: -4deg; }
+  .n2 { right: 2%; top: 58%; rotate: 3deg; }
+  .n3 { right: 0; bottom: 3%; max-width: 8rem; rotate: -2deg; }
+
+  @media (max-width: 64rem) {
+    .papeleria-text, .pile { grid-column: 1 / -1; }
+    .pile { justify-self: center; }
+  }
+  @media (max-width: 30rem) {
+    .papeleria-list { grid-template-columns: 1fr; }
+    .pile { aspect-ratio: 1 / 1.25; }
+    .p-menu { width: 50%; }
+    .p-mesero { width: 50%; top: 6%; }
+    .p-seating { width: 46%; left: 24%; }
+    .pile-note { display: none; }
+  }
+</style>

@@ -1,8 +1,7 @@
 ---
 import Contact from '../components/Contact.astro';
-import Gallery from '../components/Gallery.astro';
-import PageIntro from '../components/PageIntro.astro';
-import Portrait from '../components/Portrait.astro';
+import Ilustraciones from '../components/Ilustraciones.astro';
+import Statement from '../components/Statement.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
@@ -10,18 +9,7 @@ import Layout from '../layouts/Layout.astro';
   title="Ilustraciones personalizadas"
   description="Ilustraciones personalizadas hechas a mano: retratos de pareja, de familia, de amigos y de mascotas. Un regalo lleno de significado."
 >
-  <PageIntro
-    title="Ilustraciones personalizadas"
-    text="Retratos dibujados a mano a partir de vuestras fotos: de pareja, de familia, de amigos o de vuestra mascota. Un regalo lleno de significado."
-    action={{ href: '#contacto', label: 'Encargar una ilustración' }}
-    image={{
-      src: '/images/pieces/retrato-novios-marco.webp',
-      width: 520,
-      height: 740,
-      alt: 'Retrato ilustrado de unos novios dentro de un marco ondulado granate',
-    }}
-  />
-  <Gallery title="Retratos para regalar" />
-  <Portrait />
+  <Ilustraciones level="h1" />
+  <Statement />
   <Contact />
 </Layout>

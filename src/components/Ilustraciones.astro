@@ -1,4 +1,10 @@
 ---
+import ilusBaile from '../assets/images/ilus-baile.webp';
+import retratoNoviosMarco from '../assets/images/retrato-novios-marco.webp';
+import ilusBeso from '../assets/images/ilus-beso.webp';
+import ilusPerro from '../assets/images/ilus-perro.webp';
+import ilusInvierno from '../assets/images/ilus-invierno.webp';
+import mapaPareja from '../assets/images/mapa-pareja.webp';
 import { url } from '../lib/url';
 // Custom portraits hung close together, the way they end up on a wall at home.
 interface Props {
@@ -6,8 +12,6 @@ interface Props {
 }
 const { level = 'h2' } = Astro.props;
 const Heading = level;
-
-const img = (name: string) => url(`/images/pieces/${name}.webp`);
 ---
 
 <section id="ilustraciones" class="ilus wrap section" aria-labelledby="ilus-title">
@@ -26,29 +30,32 @@ const img = (name: string) => url(`/images/pieces/${name}.webp`);
         compartir o conservar. Cada trazo nace de algo especial, porque detrás de cada ilustración hay
         mucho más que un dibujo: <span data-annotate="underline">hay una historia que merece ser contada</span>.
       </p>
-      <a class="button" href="#contacto">Encargar una ilustración</a>
+      <div class="ilus-actions">
+        <a class="button" href="#contacto">Encargar una ilustración</a>
+        <a class="button ghost" href={url('/portfolio/')}>Ver el portfolio</a>
+      </div>
     </div>
 
     <div class="wall" data-swing-group role="group" aria-label="Ilustraciones de ejemplo">
       <figure data-swing class="print w-baile" style="--tilt:-1.5deg">
-        <img src={img('ilus-baile')} width="466" height="341" loading="lazy" alt="Ilustración de una pareja abrazada, ella con falda roja levantando un pie" />
+        <img src={ilusBaile.src} width="466" height="341" loading="lazy" alt="Ilustración de una pareja abrazada, ella con falda roja levantando un pie" />
       </figure>
       <figure data-swing class="print w-novios" style="--tilt:1.2deg">
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:35%; width:5rem; --tape-tilt:3deg"></span>
-        <img src={img('retrato-novios-marco')} width="520" height="740" loading="lazy" alt="Retrato ilustrado de unos novios dentro de un marco ondulado granate" />
+        <img src={retratoNoviosMarco.src} width="520" height="740" loading="lazy" alt="Retrato ilustrado de unos novios dentro de un marco ondulado granate" />
       </figure>
       <figure data-swing class="print w-beso" style="--tilt:2deg">
-        <img src={img('ilus-beso')} width="278" height="341" loading="lazy" alt="Ilustración de una pareja besándose, él con chistera" />
+        <img src={ilusBeso.src} width="278" height="341" loading="lazy" alt="Ilustración de una pareja besándose, él con chistera" />
       </figure>
       <figure data-swing class="print w-perro" style="--tilt:-3deg">
-        <img src={img('ilus-perro')} width="175" height="341" loading="lazy" alt="Ilustración de un bulldog francés marrón tumbado" />
+        <img src={ilusPerro.src} width="175" height="341" loading="lazy" alt="Ilustración de un bulldog francés marrón tumbado" />
         <figcaption class="note">también peludos</figcaption>
       </figure>
       <figure data-swing class="print w-invierno" style="--tilt:-1deg">
-        <img src={img('ilus-invierno')} width="439" height="539" loading="lazy" alt="Ilustración de una pareja con gorros de lana y abrigos de invierno" />
+        <img src={ilusInvierno.src} width="439" height="539" loading="lazy" alt="Ilustración de una pareja con gorros de lana y abrigos de invierno" />
       </figure>
       <figure data-swing class="print w-grupo" style="--tilt:1.8deg">
-        <img src={img('mapa-pareja')} width="900" height="1125" loading="lazy" alt="Mapa ilustrado de la historia de Laura y Raúl, con los lugares y momentos que han vivido juntos" />
+        <img src={mapaPareja.src} width="900" height="1125" loading="lazy" alt="Mapa ilustrado de la historia de Laura y Raúl, con los lugares y momentos que han vivido juntos" />
       </figure>
     </div>
   </div>
@@ -61,7 +68,7 @@ const img = (name: string) => url(`/images/pieces/${name}.webp`);
   .page-title { font-size: var(--step-display); line-height: 0.98; letter-spacing: -0.03em; }
   .ilus-text p { margin-top: 1.25rem; max-width: 38ch; }
   .ilus-text .ilus-lead { margin-top: 1.5rem; font-size: var(--step-lead); line-height: 1.3; }
-  .ilus-text .button { margin-top: 2rem; }
+  .ilus-actions { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; margin-top: 2rem; }
 
   .wall {
     grid-column: 6 / -1;

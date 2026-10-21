@@ -1,4 +1,8 @@
 ---
+import menuMesa from '../assets/images/menu-mesa.webp';
+import saveTheDate from '../assets/images/save-the-date.webp';
+import seatingPlanJardin from '../assets/images/seating-plan-jardin.webp';
+import invitacionRamo from '../assets/images/invitacion-ramo.webp';
 import { url } from '../lib/url';
 // What the stationery covers, beside a small pile of prints from real events.
 interface Props {
@@ -38,13 +42,14 @@ const items = [
         Si lo necesitáis, también me encargo de la impresión, con papeles de alta calidad y acabados
         cuidados al detalle.
       </p>
+      <a class="button" href={url('/portfolio/')}>Ver el portfolio</a>
     </div>
 
     <div class="pile" data-pile aria-label="Piezas de papelería en eventos reales" role="group">
       <figure data-drop class="print p-menu" style="--tilt:-3deg">
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:28%; width:5rem"></span>
         <img
-          src={url('/images/pieces/menu-mesa.webp')}
+          src={menuMesa.src}
           width="397"
           height="596"
           loading="lazy"
@@ -54,7 +59,7 @@ const items = [
       <figure data-drop class="print p-std" style="--tilt:2.5deg">
         <span class="tape" style="top:-0.7rem; right:18%; width:5rem; --tape-tilt:7deg"></span>
         <img
-          src={url('/images/pieces/save-the-date.webp')}
+          src={saveTheDate.src}
           width="720"
           height="900"
           loading="lazy"
@@ -64,7 +69,7 @@ const items = [
       <figure data-drop class="print p-seating" style="--tilt:-1.5deg">
         <span class="tape" style="--tape:var(--blush); top:-0.6rem; left:8%; width:4.5rem; --tape-tilt:-10deg"></span>
         <img
-          src={url('/images/pieces/seating-plan-jardin.webp')}
+          src={seatingPlanJardin.src}
           width="1200"
           height="800"
           loading="lazy"
@@ -74,7 +79,7 @@ const items = [
       <figure data-drop class="print p-invitacion" style="--tilt:2deg">
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:30%; width:4.5rem; --tape-tilt:4deg"></span>
         <img
-          src={url('/images/pieces/invitacion-ramo.webp')}
+          src={invitacionRamo.src}
           width="720"
           height="900"
           loading="lazy"
@@ -102,6 +107,7 @@ const items = [
     line-height: 1.35;
   }
   .papeleria-print { margin-top: 2rem; max-width: 40ch; color: var(--muted); font-size: var(--step-small); }
+  .papeleria-text .button { margin-top: 2rem; }
 
   .pile {
     grid-column: 7 / -1;

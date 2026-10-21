@@ -1,11 +1,11 @@
 // Resizes the original high-resolution photos and illustrations in 01-resources/originals
-// and writes them to public/images/pieces, plus the logo files in public/images.
+// and writes them to src/assets/images, plus the logo files in public/images.
 // Run with: node scripts/optimize-images.mjs
 import sharp from 'sharp';
 import { mkdirSync } from 'node:fs';
 
 const SRC = '01-resources/originals';
-const OUT = 'public/images/pieces';
+const OUT = 'src/assets/images';
 mkdirSync(OUT, { recursive: true });
 
 // [source file, output name, width] — width is about twice the largest size the page shows

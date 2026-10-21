@@ -1,8 +1,9 @@
-// Sends a contact request. There is no backend yet, so this is mocked.
+// Sends a contact request to the contact Lambda (repository bck-contact-lambda).
 //
-// To connect a real backend, set PUBLIC_CONTACT_ENDPOINT at build time (for example in .env or in the
-// GitHub Actions workflow). The form data is then POSTed there as JSON and the endpoint should
-// answer 2xx on success. Without it, the request is simulated and logged to the console.
+// PUBLIC_CONTACT_ENDPOINT is read at build time (from .env locally, or from the repository variable
+// in the GitHub Actions workflow). The form data is POSTed there as JSON and any 2xx counts as sent.
+// Without it, `npm run dev` simulates the request and logs it to the console, and a production build
+// reports an error, so a message is never silently lost.
 
 export interface ContactRequest {
   name: string;
@@ -34,6 +35,8 @@ export async function sendContactRequest(data: ContactRequest): Promise<ContactR
       return { ok: false, error: err instanceof Error ? err.message : 'network' };
     }
   }
+
+  if (import.meta.env.PROD) return { ok: false, error: 'PUBLIC_CONTACT_ENDPOINT is not set' };
 
   // Mock: wait like a real request would. An email ending in @fallo.test simulates a failure,
   // so the error state can be checked without a backend.

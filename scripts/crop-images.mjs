@@ -1,5 +1,5 @@
 // Cuts the photographs and illustrations out of the composed slides in
-// 01-resources/desktop and writes them to public/images/pieces.
+// 01-resources/desktop and writes them to src/assets/images.
 // Run with: node scripts/crop-images.mjs
 // Only crops that hold up at the size the page shows them are kept.
 // The other images come from 01-resources/originals (see optimize-images.mjs).
@@ -7,7 +7,7 @@ import sharp from 'sharp';
 import { mkdirSync } from 'node:fs';
 
 const SRC = '01-resources/desktop';
-const OUT = 'public/images/pieces';
+const OUT = 'src/assets/images';
 mkdirSync(OUT, { recursive: true });
 
 // [output name, source slide, left, top, width, height]

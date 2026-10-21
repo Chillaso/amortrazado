@@ -28,14 +28,16 @@ To move to the custom domain later: set `site: 'https://amortrazado.com'`, remov
 | `src/pages/index.astro` | Landing: hero, papelería, statement, process, packs, illustrations, contact |
 | `src/pages/papeleria-bodas.astro` | Wedding stationery page |
 | `src/pages/ilustraciones.astro` | Custom illustration page |
+| `src/pages/portfolio.astro` | Portfolio: every past work on one board |
+| `src/data/portfolio.ts` | The portfolio works, in display order, with optional descriptions |
 | `src/components/` | One component per section |
-| `src/lib/contact-api.ts` | Sends the contact form (mocked until a backend exists, see below) |
+| `src/lib/contact-api.ts` | Sends the contact form to the backend (mocked without one, see below) |
 | `src/data/contact.ts` | Email, WhatsApp and Instagram links used everywhere |
-| `public/images/pieces/` | Photos and illustrations for the sections |
+| `src/assets/images/` | Every photo and illustration, used by the sections and the portfolio |
 | `public/images/logo*.webp`, `public/favicon.png` | The logo, and its stamp alone for small marks |
 | `01-resources/originals/` | Original high-resolution photos, illustrations and logo |
-| `scripts/optimize-images.mjs` | Resizes `01-resources/originals/` into `public/images/` |
-| `scripts/crop-images.mjs` | Regenerates the minuta and illustration-wall crops in `public/images/pieces/` from `01-resources/desktop/` |
+| `scripts/optimize-images.mjs` | Resizes `01-resources/originals/` into `src/assets/images/` (and the logo into `public/images/`) |
+| `scripts/crop-images.mjs` | Regenerates the minuta and illustration-wall crops in `src/assets/images/` from `01-resources/desktop/` |
 
 ## Motion
 
@@ -47,18 +49,56 @@ come from [Motion](https://motion.dev). Sections opt in with `data-*` attributes
 of the script). With reduced motion, or if the script fails to load, the page shows its final state.
 Page-to-page navigation uses CSS cross-document view transitions.
 
+## Portfolio
+
+`/portfolio` shows every work listed in `src/data/portfolio.ts`, on one long board (three columns
+on desktop, two on phones). Images live in `src/assets/images/`, the same folder the other sections
+use, so a photo is never stored twice.
+
+To show an image in the portfolio:
+
+1. Put the file in `src/assets/images/` (`.png`, `.jpg`, `.jpeg`, `.webp` or `.avif`, any size: it is
+   resized and converted to WebP at build time). Use a short name without spaces, e.g.
+   `invitacion-lucia.jpg`.
+2. Add an entry to the `portfolio` list in `src/data/portfolio.ts`:
+
+   ```ts
+   {
+     image: 'invitacion-lucia.jpg',          // file name in src/assets/images/
+     alt: 'Invitación ilustrada con olivos',  // what the image shows (for screen readers)
+     title: 'Invitación de Lucía y Pablo',    // optional, shown in the card
+     description: 'Una invitación…',          // optional: without it the image doesn't open
+     note: 'invitación',                      // optional handwritten caption under the print
+   },
+   ```
+
+3. Order: the list order is the order on the page, left to right and then down. Move an entry up or
+   down to reorder. To hide a work, delete (or comment out) its entry; the file can stay.
+
+A work with a `description` shows a small crimson "+" and opens a card with its title and
+description when clicked. Without a `description` it is just a picture and clicking does nothing.
+If an entry names a file that isn't in `src/assets/images/`, the build stops and says which one.
+
 ## Contact form
 
-The form validates in the browser and calls `sendContactRequest()` in `src/lib/contact-api.ts`.
-Until there is a backend it only simulates the request (and logs the payload to the console); an
-email ending in `@fallo.test` simulates a failure so the error message can be checked.
-To connect the backend, set `PUBLIC_CONTACT_ENDPOINT` at build time: the form data is POSTed there
-as JSON (`name, email, phone, services[], eventDate, location, guests, message, consent`) and any
-2xx response counts as sent.
+The form validates in the browser and calls `sendContactRequest()` in `src/lib/contact-api.ts`,
+which POSTs it as JSON (`name, email, phone, services[], eventDate, location, guests, message,
+consent`) to `PUBLIC_CONTACT_ENDPOINT`. Any 2xx response counts as sent.
+
+The backend is an AWS Lambda in its own repository, `bck-contact-lambda`: it emails each request,
+as pretty-printed JSON, to a configurable address. Its README covers the AWS setup.
+
+- **Production:** set the repository variable `PUBLIC_CONTACT_ENDPOINT` (Settings → Secrets and
+  variables → Actions → Variables) to the Lambda's Function URL. The deploy workflow passes it to
+  the build. Without it the form shows the error message instead of pretending to send.
+- **Locally:** without the variable, `npm run dev` simulates the request and logs it to the
+  console; an email ending in `@fallo.test` simulates a failure. To test against the real Lambda,
+  add `PUBLIC_CONTACT_ENDPOINT=https://…` to a `.env` file and add `http://localhost:4321` to the
+  Lambda's `ALLOWED_ORIGINS`.
 
 ## Before launch
 
-- Connect the contact form to a backend (see above).
+- Set up the contact Lambda and the `PUBLIC_CONTACT_ENDPOINT` variable (see Contact form).
 - The minuta photo and most of the illustrations wall are still crops of 1366px slides, so the page
   never shows them larger than their real size. With the originals, add them to
   `01-resources/originals/` and `scripts/optimize-images.mjs`.

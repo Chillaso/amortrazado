@@ -1,6 +1,7 @@
 ---
 import { url } from '../lib/url';
 import { contact } from '../data/contact';
+import ContactLinks from './ContactLinks.astro';
 
 const services = [
   { value: 'invitaciones', label: 'Invitaciones' },
@@ -16,23 +17,18 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
     <div class="contact-side">
       <h2 id="contact-title" class="head">¿Hablamos?</h2>
       <p class="contact-lead">
-        Contadme qué tenéis en mente y os respondo con ideas y un presupuesto, normalmente en
-        <span data-annotate="highlight" data-color="#f6f3f2">uno o dos días</span>.
+        <span data-annotate="highlight" data-color="#f6f3f2">Contadme qué tenéis en mente</span> y os respondo con ideas y un presupuesto.
       </p>
       <p class="contact-alt">Si lo preferís, también podéis escribirme directamente:</p>
-      <ul class="contact-links">
-        <li><a class="link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
-        <li><a class="link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-        <li><a class="link" href={contact.instagram} target="_blank" rel="noopener noreferrer">Instagram {contact.instagramHandle}</a></li>
-      </ul>
+      <ContactLinks class="contact-links" />
       <figure class="print contact-print" style="--tilt:-3deg" data-drop>
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:30%; width:4.5rem"></span>
         <img
-          src={url('/images/pieces/retrato-grupo-manos.webp')}
-          width="624"
-          height="628"
+          src={url('/images/pieces/retrato-contacto.webp')}
+          width="720"
+          height="900"
           loading="lazy"
-          alt="Manos sosteniendo una ilustración a acuarela de un grupo de amigos"
+          alt="Retrato de una mujer de pelo largo y ondulado, con vestido negro, ante una pared con flores dibujadas"
         />
         <figcaption class="note">un regalo para los amigos de siempre</figcaption>
       </figure>
@@ -253,10 +249,9 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   .contact-side { grid-column: 1 / span 4; }
   .contact-lead { margin-top: 1.25rem; max-width: 34ch; }
   .contact-alt { margin-top: 1.75rem; font-size: var(--step-small); }
-  .contact-links { display: grid; gap: 0.35rem; margin-top: 0.5rem; }
-  .contact-links a { display: inline-block; padding-block: 0.2rem; overflow-wrap: anywhere; }
+  .contact-side :global(.contact-links) { margin-top: 0.5rem; }
   .contact-print { width: min(15rem, 70%); margin-top: 3rem; padding-bottom: 0.3rem; }
-  .contact-print img { aspect-ratio: 1; }
+  .contact-print img { aspect-ratio: 4 / 5; }
   .contact-print figcaption { font-size: 1.2rem; text-align: center; color: var(--ink); }
 
   .letter {

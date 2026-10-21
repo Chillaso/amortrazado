@@ -1,8 +1,7 @@
 ---
 import { url } from '../lib/url';
-// The back of the postcard: a scalloped paper panel on the crimson field, with a stamp.
-import { contact } from '../data/contact';
-import StampMark from './StampMark.astro';
+// The back of the postcard: a scalloped paper panel on the crimson field.
+import ContactLinks from './ContactLinks.astro';
 
 const scallops = (n: number) => {
   const w = 100;
@@ -37,19 +36,12 @@ const year = new Date().getFullYear();
       </div>
 
       <div class="card-address">
-        <figure class="stamp perforated">
-          <img src={url('/images/pieces/grullas.webp')} width="398" height="596" alt="" loading="lazy" />
-        </figure>
-        <ul>
-          <li><a class="link" href={`mailto:${contact.email}`}>{contact.email}</a></li>
-          <li><a class="link" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-          <li><a class="link" href={contact.instagram} target="_blank" rel="noopener noreferrer">Instagram {contact.instagramHandle}</a></li>
-                  </ul>
+        <ContactLinks />
       </div>
     </div>
 
     <p class="imprint">
-      <StampMark size={18} />
+      <img src={url('/images/logo-mark.webp')} width="20" height="20" alt="" />
       <span>© {year} Amor Trazado. Dibujado e impreso con cariño.</span>
     </p>
   </div>
@@ -88,28 +80,7 @@ const year = new Date().getFullYear();
   .card-nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 1.75rem; font-size: var(--step-body); }
 
   .card-address { position: relative; padding-top: 0.25rem; }
-  .stamp {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 5.5rem;
-    aspect-ratio: 3 / 4;
-    margin: 0;
-    --r: 3px;
-    background: var(--surface);
-    transform: rotate(3deg);
-    transition: transform 500ms var(--ease-out);
-  }
-  .stamp img { width: 100%; height: 100%; object-fit: cover; }
-  @media (hover: hover) and (pointer: fine) {
-    .card-back:hover .stamp { transform: rotate(-2deg); }
-  }
-  .card-address ul {
-    display: grid;
-    gap: 0.75rem;
-    margin-top: 8rem;
-    font-size: var(--step-body);
-  }
+  .card-address { font-size: var(--step-body); }
 
   .imprint {
     display: flex;
@@ -127,9 +98,6 @@ const year = new Date().getFullYear();
     .scallops.narrow { display: block; }
     .card-body { grid-template-columns: 1fr; gap: 2.5rem; }
     .card-address { position: static; }
-    .stamp { width: 4rem; top: 1.75rem; right: 1.25rem; }
-    .card-message { padding-right: 4.5rem; }
-    .card-address ul { margin-top: 0; font-size: var(--step-body); }
     .imprint { flex-direction: column; text-align: center; }
   }
 </style>

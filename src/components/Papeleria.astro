@@ -1,6 +1,6 @@
 ---
 import { url } from '../lib/url';
-// What the stationery covers, beside a small pile of prints from real weddings.
+// What the stationery covers, beside a small pile of prints from real events.
 interface Props {
   level?: 'h1' | 'h2';
 }
@@ -10,14 +10,12 @@ const Heading = level;
 const items = [
   'Invitaciones personalizadas',
   'Save the date',
-  'Sobres ilustrados',
-  'Mapas ilustrados',
-  'Programas de boda',
+  'Timeline',
+  'Marcasitios',
+  'Seating plan y meseros',
   'Minutas',
-  'Seating plan',
-  'Meseros y capitanes de mesa',
-  'Sellos o insignias de pareja',
-  'Tarjetas de agradecimiento',
+  'Tarjetas',
+  '¡Y mucho más!',
 ];
 ---
 
@@ -25,11 +23,13 @@ const items = [
   <div class="grid papeleria-grid">
     <div class="papeleria-text">
       <Heading id="papeleria-title" class={level === 'h1' ? 'page-title' : 'head'}>
-        Papelería para bodas
+        Papelería para eventos
       </Heading>
       <p class="papeleria-intro">
-        Cada boda está llena de pequeños detalles que la hacen única. Diseño e ilustro cada pieza a
-        medida, para que todas cuenten <span data-annotate="highlight" data-color="#e8cbbf">una misma historia: la vuestra</span>.
+        Cada celebración tiene una historia que merece ser contada. Diseño papelería personalizada
+        para bodas y otros eventos, cuidando cada detalle para que refleje vuestra esencia y convierta
+        cada ocasión en algo único. Porque celebrar es bonito, pero hacerlo
+        <span data-annotate="highlight" data-color="#e8cbbf">a vuestra manera</span> lo es aún más.
       </p>
       <ul class="checks papeleria-list">
         {items.map((i) => <li>{i}</li>)}
@@ -40,7 +40,7 @@ const items = [
       </p>
     </div>
 
-    <div class="pile" data-pile aria-label="Piezas de papelería en bodas reales" role="group">
+    <div class="pile" data-pile aria-label="Piezas de papelería en eventos reales" role="group">
       <figure data-drop class="print p-menu" style="--tilt:-3deg">
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:28%; width:5rem"></span>
         <img
@@ -51,29 +51,40 @@ const items = [
           alt="Minuta ilustrada «Menú de bodas» sobre una mesa de madera junto a una vela"
         />
       </figure>
-      <figure data-drop class="print p-mesero" style="--tilt:2.5deg">
+      <figure data-drop class="print p-std" style="--tilt:2.5deg">
         <span class="tape" style="top:-0.7rem; right:18%; width:5rem; --tape-tilt:7deg"></span>
         <img
-          src={url('/images/pieces/seating-calabazas.webp')}
-          width="555"
-          height="657"
+          src={url('/images/pieces/save-the-date.webp')}
+          width="720"
+          height="900"
           loading="lazy"
-          alt="Tarjeta de mesa «Robledal» entre calabazas, ciruelas y eucalipto"
+          alt="Save the date ilustrado de Óscar y Felipe, con la pareja sentada en un sofá rosa"
         />
       </figure>
-      <figure data-drop class="print p-seating" style="--tilt:-1deg">
+      <figure data-drop class="print p-seating" style="--tilt:-1.5deg">
         <span class="tape" style="--tape:var(--blush); top:-0.6rem; left:8%; width:4.5rem; --tape-tilt:-10deg"></span>
         <img
-          src={url('/images/pieces/mesa-frutas.webp')}
-          width="397"
-          height="596"
+          src={url('/images/pieces/seating-plan-jardin.webp')}
+          width="1200"
+          height="800"
           loading="lazy"
-          alt="Seating plan colocado entre macetas de flores, uvas y calabazas en una mesa al aire libre"
+          alt="Seating plan con tarjetas colgadas entre macetas de flores, frutas y velas en un jardín"
         />
       </figure>
-      <p data-float="20" class="note pile-note n1" aria-hidden="true">la minuta</p>
-      <p data-float="20" class="note pile-note n2" aria-hidden="true">mesa Robledal</p>
-      <p data-float="20" class="note pile-note n3" aria-hidden="true">seating plan entre fruta</p>
+      <figure data-drop class="print p-invitacion" style="--tilt:2deg">
+        <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:30%; width:4.5rem; --tape-tilt:4deg"></span>
+        <img
+          src={url('/images/pieces/invitacion-ramo.webp')}
+          width="720"
+          height="900"
+          loading="lazy"
+          alt="Una novia sostiene la invitación ilustrada de Berta y Javier junto a su ramo"
+        />
+      </figure>
+      <p data-float="20" class="note pile-note n-menu" aria-hidden="true">la minuta</p>
+      <p data-float="20" class="note pile-note n-std" aria-hidden="true">Save the date</p>
+      <p data-float="20" class="note pile-note n-seating" aria-hidden="true">Seating plan</p>
+      <p data-float="20" class="note pile-note n-invitacion" aria-hidden="true">Invitación de boda</p>
     </div>
   </div>
 </section>
@@ -95,23 +106,26 @@ const items = [
   .pile {
     grid-column: 7 / -1;
     position: relative;
-    aspect-ratio: 1 / 1.02;
+    aspect-ratio: 1 / 1.2;
     max-width: 42rem;
     width: 100%;
     justify-self: end;
   }
   .pile .print { position: absolute; }
-  .p-menu { left: 0; top: 4%; width: 44%; }
+  .p-menu { left: 0; top: 3%; width: 38%; }
   .p-menu img { aspect-ratio: 2 / 3; }
-  .p-mesero { right: 0; top: 0; width: 46%; }
-  .p-mesero img { aspect-ratio: 5 / 6; }
-  .p-seating { left: 30%; bottom: 0; width: 38%; z-index: 1; }
-  .p-seating img { aspect-ratio: 4 / 5; }
+  .p-std { right: 2%; top: 0; width: 40%; }
+  .p-std img { aspect-ratio: 4 / 5; }
+  .p-seating { right: 0; top: 50%; width: 60%; z-index: 1; }
+  .p-seating img { aspect-ratio: 3 / 2; }
+  .p-invitacion { left: 4%; bottom: 0; width: 34%; }
+  .p-invitacion img { aspect-ratio: 4 / 5; }
 
   .pile-note { position: absolute; font-size: 1.35rem; }
-  .n1 { left: 2%; bottom: 18%; rotate: -4deg; }
-  .n2 { right: 2%; top: 58%; rotate: 3deg; }
-  .n3 { right: 0; bottom: 3%; max-width: 8rem; rotate: -2deg; }
+  .n-menu { left: 4%; top: 52%; rotate: -4deg; }
+  .n-std { right: 6%; top: 41.5%; rotate: 3deg; }
+  .n-seating { right: 4%; bottom: 9%; rotate: -2deg; }
+  .n-invitacion { left: 42%; bottom: 3%; rotate: 2deg; }
 
   @media (max-width: 64rem) {
     .papeleria-text, .pile { grid-column: 1 / -1; }
@@ -119,10 +133,11 @@ const items = [
   }
   @media (max-width: 30rem) {
     .papeleria-list { grid-template-columns: 1fr; }
-    .pile { aspect-ratio: 1 / 1.25; }
-    .p-menu { width: 50%; }
-    .p-mesero { width: 50%; top: 6%; }
-    .p-seating { width: 46%; left: 24%; }
+    .pile { aspect-ratio: 1 / 1.45; }
+    .p-menu { width: 46%; }
+    .p-std { width: 48%; top: 4%; }
+    .p-seating { width: 72%; top: 46%; }
+    .p-invitacion { width: 44%; }
     .pile-note { display: none; }
   }
 </style>

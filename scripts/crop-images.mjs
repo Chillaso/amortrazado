@@ -2,7 +2,7 @@
 // 01-resources/desktop and writes them to public/images/pieces.
 // Run with: node scripts/crop-images.mjs
 // Only crops that hold up at the size the page shows them are kept.
-// Replace these crops with the original high-resolution files when available.
+// The other images come from 01-resources/originals (see optimize-images.mjs).
 import sharp from 'sharp';
 import { mkdirSync } from 'node:fs';
 
@@ -12,18 +12,11 @@ mkdirSync(OUT, { recursive: true });
 
 // [output name, source slide, left, top, width, height]
 const crops = [
-  ['grullas', 'section2', 58, 86, 398, 596],
-  ['mesa-frutas', 'section2', 485, 86, 397, 596],
   ['menu-mesa', 'section2', 910, 86, 397, 596],
-  ['suite-kraft', 'section4', 0, 0, 1366, 768],
-  ['seating-calabazas', 'section1-1', 77, 55, 555, 657],
-  ['retrato-grupo-manos', 'section6-2', 683, 62, 624, 628],
   ['retrato-novios-marco', 'section6', 52, 18, 520, 740],
   ['ilus-baile', 'section6-3', 100, 36, 466, 341],
   ['ilus-beso', 'section6-3', 586, 36, 278, 341],
   ['ilus-invierno', 'section6-3', 883, 36, 439, 539],
-  ['ilus-novios', 'section6-3', 100, 390, 276, 341],
-  ['ilus-grupo', 'section6-3', 395, 390, 276, 341],
   ['ilus-perro', 'section6-3', 689, 390, 175, 341],
 ];
 

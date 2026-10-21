@@ -1,7 +1,7 @@
-// Contact details used across the site. The WhatsApp number is a placeholder: replace it before launch.
+// Contact details used across the site.
 export const contact = {
   email: 'hola@amortrazado.com',
-  whatsapp: 'https://wa.me/34600000000',
+  whatsapp: 'https://wa.me/34640722188',
   instagram: 'https://instagram.com/amortrazado',
   instagramHandle: '@amortrazado',
 };

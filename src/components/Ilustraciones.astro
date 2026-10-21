@@ -21,9 +21,10 @@ const img = (name: string) => url(`/images/pieces/${name}.webp`);
         indicado.
       </p>
       <p>
-        Cada ilustración nace de una historia: una pareja, una familia, un grupo de amigos o quien
-        os acompaña a cuatro patas. Me enviáis vuestras fotos favoritas, me contáis qué os hace
-        únicos y lo dibujo a mano. La recibís en digital o impresa, <span data-annotate="underline">lista para enmarcar</span>.
+        Hay personas, lugares y momentos que merecen quedarse un poquito más. Creo ilustraciones
+        personalizadas que convierten recuerdos e historias en piezas únicas, pensadas para regalar,
+        compartir o conservar. Cada trazo nace de algo especial, porque detrás de cada ilustración hay
+        mucho más que un dibujo: <span data-annotate="underline">hay una historia que merece ser contada</span>.
       </p>
       <a class="button" href="#contacto">Encargar una ilustración</a>
     </div>
@@ -47,7 +48,7 @@ const img = (name: string) => url(`/images/pieces/${name}.webp`);
         <img src={img('ilus-invierno')} width="439" height="539" loading="lazy" alt="Ilustración de una pareja con gorros de lana y abrigos de invierno" />
       </figure>
       <figure data-swing class="print w-grupo" style="--tilt:1.8deg">
-        <img src={img('ilus-grupo')} width="276" height="341" loading="lazy" alt="Ilustración a acuarela de un grupo de amigos haciéndose una foto" />
+        <img src={img('mapa-pareja')} width="900" height="1125" loading="lazy" alt="Mapa ilustrado de la historia de Laura y Raúl, con los lugares y momentos que han vivido juntos" />
       </figure>
     </div>
   </div>
@@ -86,7 +87,7 @@ const img = (name: string) => url(`/images/pieces/${name}.webp`);
   .w-invierno { grid-column: 2 / span 2; grid-row: 3; margin-top: -0.5rem; }
   .w-invierno img { aspect-ratio: 439 / 539; }
   .w-grupo { grid-column: 4 / span 2; grid-row: 3; }
-  .w-grupo img { aspect-ratio: 276 / 341; }
+  .w-grupo img { aspect-ratio: 4 / 5; }
 
   @media (max-width: 64rem) {
     .ilus-text, .wall { grid-column: 1 / -1; }

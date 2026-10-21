@@ -7,14 +7,16 @@ import { url } from '../lib/url';
   <div class="hero-grid grid">
     <div class="hero-text">
       <h1 id="hero-title" class="hero-title">
-        Bodas dibujadas a mano
+        Historias trazadas con amor
         <svg class="trace" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true">
           <path pathLength="1" d="M6 28 C 90 14, 170 34, 260 22 S 420 10, 500 20 S 570 28, 594 14" />
         </svg>
       </h1>
       <p class="hero-sentence">
-        Diseño e ilustro la papelería de vuestra boda (invitaciones, mapas, minutas, seating plan) y
-        retratos personalizados para regalar. Cada pieza empieza con un lápiz y vuestra historia.
+        Cada historia tiene algo que la hace única, y merece una forma especial de contarla. En Amor
+        Trazado, transformo momentos, recuerdos y emociones en ilustraciones y papelería personalizada,
+        cuidando cada detalle para que hable de quienes sois y de aquello que os hace especiales.
+        Porque, a veces, son las pequeñas cosas las que guardan los sentimientos más grandes.
       </p>
       <div class="hero-actions">
         <a class="button" href="#contacto">Pedir presupuesto</a>
@@ -24,7 +26,7 @@ import { url } from '../lib/url';
 
     <div class="hero-collage" data-pile>
       <p class="note collage-note" aria-hidden="true" data-float="24">
-        invitación, mapa, minuta y seating plan
+        Papelería personalizada
         <svg class="arrow" viewBox="0 0 60 50" data-draw data-draw-delay="1.1">
           <path pathLength="1" d="M8 6 C 18 22, 30 34, 50 40 M50 40 L 38 42 M50 40 L 44 30" />
         </svg>
@@ -33,22 +35,31 @@ import { url } from '../lib/url';
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:12%; --tape-tilt:-4deg"></span>
         <span class="tape" style="top:-0.6rem; right:10%; --tape-tilt:5deg"></span>
         <img
-          src={url('/images/pieces/suite-kraft.webp')}
-          width="1366"
-          height="768"
+          src={url('/images/pieces/papeleria-collage.webp')}
+          width="1800"
+          height="750"
           fetchpriority="high"
-          alt="Papelería completa de una boda sobre papel kraft: invitación, mapa ilustrado, minuta y tarjetas de seating plan con flores secas"
+          alt="Papelería de la boda de Vicky y Víctor en tonos lila: invitación, timeline, minuta, tarjetas y sellos ilustrados con la finca"
         />
       </figure>
       <figure class="print print-polaroid" style="--tilt:4deg" data-drop>
         <span class="tape" style="--tape:var(--blush); top:-0.7rem; left:30%; width:4.5rem"></span>
         <img
-          src={url('/images/pieces/grullas.webp')}
-          width="398"
-          height="596"
-          alt="Dos manos sostienen la invitación «La leyenda de las grullas de papel» delante de un muro de rosas"
+          src={url('/images/pieces/invitacion-flores.webp')}
+          width="720"
+          height="900"
+          alt="Dos manos sostienen una invitación ilustrada delante de un ramo de flores naranjas y granates"
         />
-        <figcaption class="note">la leyenda de las grullas</figcaption>
+        <figcaption class="note">Detalles únicos</figcaption>
+      </figure>
+      <figure class="print print-polaroid print-polaroid-2" style="--tilt:-3deg" data-drop>
+        <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:34%; width:4.5rem; --tape-tilt:4deg"></span>
+        <img
+          src={url('/images/pieces/ilus-amigas.webp')}
+          width="720"
+          height="900"
+          alt="Ilustración de un grupo de amigas abrazadas, en tonos verdes, malvas y azules"
+        />
       </figure>
     </div>
   </div>
@@ -97,10 +108,10 @@ import { url } from '../lib/url';
   .hero-collage {
     grid-column: 6 / -1;
     position: relative;
-    padding: 4rem 0 5.5rem 3rem;
+    padding: 4rem 0 12rem 3rem;
   }
   .print-main { max-width: 52rem; margin-left: auto; }
-  .print-main img { aspect-ratio: 16 / 9; }
+  .print-main img { aspect-ratio: 12 / 5; }
   .print-polaroid {
     position: absolute;
     left: 0;
@@ -108,6 +119,7 @@ import { url } from '../lib/url';
     width: clamp(9rem, 30%, 14.5rem);
     padding-bottom: 0.25rem;
   }
+  .print-polaroid-2 { left: auto; right: 8%; bottom: 1.5rem; width: clamp(8rem, 26%, 12.5rem); }
   .print-polaroid img { aspect-ratio: 4 / 5; }
   .print-polaroid figcaption { text-align: center; font-size: 1.3rem; color: var(--ink); }
 
@@ -128,13 +140,14 @@ import { url } from '../lib/url';
   @media (max-width: 64rem) {
     .hero-text, .hero-collage { grid-column: 1 / -1; }
     .hero-text { max-width: 40rem; }
-    .hero-collage { padding: 4rem 0 5rem 0; }
+    .hero-collage { padding: 4rem 0 10rem 0; }
     .collage-note { left: auto; right: 0; text-align: right; }
     .arrow { margin-left: auto; margin-right: 2rem; transform: scaleX(-1); }
   }
   @media (max-width: 36rem) {
-    .hero-collage { padding-bottom: 8rem; }
-    .print-polaroid { left: auto; right: 0.25rem; width: 46%; }
+    .hero-collage { padding-bottom: 10rem; }
+    .print-polaroid { left: auto; right: 0.25rem; width: 38%; }
+    .print-polaroid-2 { left: 0.25rem; right: auto; bottom: 1rem; width: 34%; }
     .collage-note { max-width: 11rem; }
   }
 </style>

@@ -28,11 +28,14 @@ To move to the custom domain later: set `site: 'https://amortrazado.com'`, remov
 | `src/pages/index.astro` | Landing: hero, papelería, statement, process, packs, illustrations, contact |
 | `src/pages/papeleria-bodas.astro` | Wedding stationery page |
 | `src/pages/ilustraciones.astro` | Custom illustration page |
-| `src/components/` | One component per section; `StampMark.astro` is the logo stamp drawn in SVG |
+| `src/components/` | One component per section |
 | `src/lib/contact-api.ts` | Sends the contact form (mocked until a backend exists, see below) |
 | `src/data/contact.ts` | Email, WhatsApp and Instagram links used everywhere |
-| `public/images/pieces/` | Photos and illustrations cut from the slides in `01-resources/` |
-| `scripts/crop-images.mjs` | Regenerates `public/images/pieces/` from `01-resources/desktop/` |
+| `public/images/pieces/` | Photos and illustrations for the sections |
+| `public/images/logo*.webp`, `public/favicon.png` | The logo, and its stamp alone for small marks |
+| `01-resources/originals/` | Original high-resolution photos, illustrations and logo |
+| `scripts/optimize-images.mjs` | Resizes `01-resources/originals/` into `public/images/` |
+| `scripts/crop-images.mjs` | Regenerates the minuta and illustration-wall crops in `public/images/pieces/` from `01-resources/desktop/` |
 
 ## Motion
 
@@ -55,11 +58,10 @@ as JSON (`name, email, phone, services[], eventDate, location, guests, message, 
 
 ## Before launch
 
-- Replace the WhatsApp placeholder number in `src/data/contact.ts`.
 - Connect the contact form to a backend (see above).
-- The images are crops of 1366px slides, so the page never shows them larger than their real size.
-  With the original high-resolution photos they could be used larger; keep the file names, or
-  update the `src` and `width`/`height` in the components.
+- The minuta photo and most of the illustrations wall are still crops of 1366px slides, so the page
+  never shows them larger than their real size. With the originals, add them to
+  `01-resources/originals/` and `scripts/optimize-images.mjs`.
 
 ## Colours
 

@@ -2,21 +2,21 @@
 // The process printed like a wedding programme: a paper slip on a sage field.
 const stages = [
   {
-    when: 'Primero',
+    when: 'Planteamiento',
     rows: [
       ['Me contáis vuestra historia', 'Videollamada o mensajes'],
       ['Propuesta de estilo y presupuesto', 'Por escrito'],
     ],
   },
   {
-    when: 'Después',
+    when: 'Proceso creativo',
     rows: [
       ['Boceto a mano de cada pieza', 'Ilustración'],
       ['Color, textos y ajustes', 'Hasta 3 revisiones'],
     ],
   },
   {
-    when: 'Al final',
+    when: 'Retoques finales',
     rows: [
       ['Papeles y acabados cuidados', 'Alta calidad'],
       ['Impresión y entrega', 'Digital o impresa'],
@@ -34,7 +34,7 @@ const stages = [
         historia.
       </p>
       <p>
-        Si lo necesitáis, <span data-annotate="underline" data-color="#a92b4b">también me encargo de la impresión</span>, con papeles de alta calidad y acabados
+        Si lo necesitáis, <span data-annotate="underline" data-color="#ffffff">también me encargo de la impresión</span>, con papeles de alta calidad y acabados
         cuidados al detalle.
       </p>
     </div>
@@ -72,7 +72,7 @@ const stages = [
     padding-block: calc(var(--section) * 0.6);
   }
   .process-grid { align-items: start; row-gap: 3rem; }
-  .process-text { grid-column: 1 / span 5; }
+  .process-text { grid-column: 1 / span 5; color: #fff; }
   .process-text p { margin-top: 1.25rem; max-width: 36ch; }
   .process-text p + p { margin-top: 1rem; }
 

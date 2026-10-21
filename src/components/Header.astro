@@ -1,6 +1,5 @@
 ---
 import { url } from '../lib/url';
-import StampMark from './StampMark.astro';
 
 const links = [
   { href: url('/#papeleria'), label: 'Papelería' },
@@ -12,8 +11,7 @@ const links = [
 
 <header class="site-header wrap">
   <a class="brand" href={url('/')} aria-label="Amor Trazado, inicio">
-    <StampMark size={34} class="brand-mark" />
-    <span>Amor Trazado</span>
+    <img class="brand-logo" src={url('/images/logo.webp')} width="440" height="160" alt="Amor Trazado" />
   </a>
 
   <nav class="nav" aria-label="Principal">
@@ -44,19 +42,10 @@ const links = [
     min-height: 5.5rem;
     font-size: var(--step-body);
   }
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    color: var(--crimson);
-    text-decoration: none;
-    font-size: var(--step-body);
-    letter-spacing: -0.01em;
-    font-weight: 500;
-  }
-  .brand :global(.brand-mark) { transition: transform 600ms var(--ease-out); }
+  .brand { display: inline-flex; align-items: center; }
+  .brand-logo { width: auto; height: 3.25rem; transition: transform 600ms var(--ease-out); }
   @media (hover: hover) and (pointer: fine) {
-    .brand:hover :global(.brand-mark) { transform: rotate(-8deg); }
+    .brand:hover .brand-logo { transform: rotate(-2deg); }
   }
   .nav-list { display: flex; gap: clamp(1.25rem, 2.6vw, 2.5rem); }
   .nav-link { text-decoration-color: transparent; }
@@ -96,5 +85,6 @@ const links = [
     .nav, .header-action { display: none; }
     .nav-phone { display: block; }
     .site-header { min-height: 4.5rem; }
+    .brand-logo { height: 2.75rem; }
   }
 </style>

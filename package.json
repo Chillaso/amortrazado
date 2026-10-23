@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "astro": "^5.18.2",
-    "motion": "13.5.1",
+    "motion": "14.4.0",
     "rough-notation": "0.5.1"
   }
 }

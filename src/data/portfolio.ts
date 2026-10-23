@@ -2,87 +2,42 @@
 //
 // To add a work, drop the image into src/assets/images/ (any size: it is resized at build time)
 // and add an entry here with its file name.
-//   image        file name inside src/assets/images/
-//   alt          what the image shows, for people who can't see it
-//   title        optional, shown in the description card
-//   description  optional; without it the piece can't be opened
-//   note         optional handwritten caption under the print
+//   image  file name inside src/assets/images/
+//   alt    what the image shows, for people who can't see it
 export interface PortfolioWork {
   image: string;
   alt: string;
-  title?: string;
-  description?: string;
-  note?: string;
 }
 
 export const portfolio: PortfolioWork[] = [
-  {
-    image: 'papeleria-collage.webp',
-    alt: 'Papelería de boda en tonos lila: invitación, timeline, minuta, tarjetas y sellos ilustrados',
-    title: 'Papelería de Vicky y Víctor',
-    description:
-      'Invitación, timeline, minuta, tarjetas y sellos en tonos lila, con los edificios del lugar de la celebración dibujados a mano.',
-  },
-  {
-    image: 'save-the-date.webp',
-    alt: 'Save the date ilustrado de Óscar y Felipe, con la pareja sentada en un sofá rosa',
-    title: 'Save the date de Óscar y Felipe',
-    description: 'Un save the date ilustrado con la pareja retratada en un sofá rosa, para anunciar la fecha a su manera.',
-    note: 'save the date',
-  },
-  {
-    image: 'retrato-novios-marco.webp',
-    alt: 'Retrato ilustrado de unos novios dentro de un marco ondulado granate',
-    title: 'Retrato de novios',
-    description: 'Retrato ilustrado de la pareja el día de su boda, enmarcado con una línea ondulada en granate.',
-  },
-  {
-    image: 'invitacion-ramo.webp',
-    alt: 'Una novia sostiene la invitación ilustrada de Berta y Javier junto a su ramo',
-    note: 'invitación de boda',
-  },
-  {
-    image: 'mapa-pareja.webp',
-    alt: 'Mapa ilustrado de la historia de Laura y Raúl, con los lugares y momentos que han vivido juntos',
-    title: 'Mapa de Laura y Raúl',
-    description:
-      'Un mapa ilustrado que recorre los lugares y momentos que Laura y Raúl han vivido juntos. Y la historia continúa.',
-  },
-  {
-    image: 'ilus-baile.webp',
-    alt: 'Ilustración de una pareja abrazada, ella con falda roja levantando un pie',
-  },
-  {
-    image: 'seating-plan-jardin.webp',
-    alt: 'Seating plan con tarjetas colgadas entre macetas de flores, frutas y velas en un jardín',
-    title: 'Seating plan entre flores',
-    description: 'Las tarjetas de cada mesa, colocadas entre macetas, frutas y velas para recibir a los invitados.',
-    note: 'seating plan',
-  },
-  {
-    image: 'ilus-amigas.webp',
-    alt: 'Ilustración de un grupo de amigas abrazadas, en tonos verdes, malvas y azules',
-  },
-  {
-    image: 'menu-mesa.webp',
-    alt: 'Minuta ilustrada «Menú de bodas» sobre una mesa de madera junto a una vela',
-    note: 'la minuta',
-  },
-  {
-    image: 'ilus-beso.webp',
-    alt: 'Ilustración de una pareja besándose, él con chistera',
-  },
-  {
-    image: 'invitacion-flores.webp',
-    alt: 'Dos manos sostienen una invitación ilustrada delante de un ramo de flores naranjas y granates',
-  },
-  {
-    image: 'ilus-invierno.webp',
-    alt: 'Ilustración de una pareja con gorros de lana y abrigos de invierno',
-  },
-  {
-    image: 'ilus-perro.webp',
-    alt: 'Ilustración de un bulldog francés marrón tumbado',
-    note: 'también peludos',
-  },
+  { image: 'invitacion1.webp', alt: 'Save the date ilustrado en tonos rojizos con un dibujo de la pareja, sostenido entre dos manos' },
+  { image: 'invitacion3.webp', alt: 'Dos invitaciones granate con dibujos en blanco, sellos de cera y velas sobre una mesa de madera' },
+  { image: 'invitacion4.webp', alt: 'Invitación con marco floral verde y malva, junto a plumas y hojas sobre una mesa de madera' },
+  { image: 'invitacion5.webp', alt: 'Dos invitaciones en lila y amarillo sobre una mesa con conchas, una estrella de mar y velas' },
+  { image: 'invitacion6.webp', alt: 'Invitación de temática golf en tonos granate y terracota, junto a palos de golf y una botella' },
+  { image: 'invitacion7.webp', alt: 'Dos invitaciones con código QR, junto a una etiqueta de madera con iniciales y corchos sobre una mesa rústica' },
+  { image: 'invitacion8.webp', alt: 'Invitaciones lila y granate con sellos ilustrados, sobre una mesa con uvas, corchos y una botella' },
+  { image: 'capitan.webp', alt: 'Invitación ilustrada sobre una mesa de banquete, con flores, velas y copas de cristal' },
+  { image: 'save-the-date.webp', alt: 'Invitación ilustrada sobre una pareja en colores morados' },
+  { image: 'minuta1.webp', alt: 'Minuta ilustrada de menú de boda con dibujos de edificios en la base, sobre una mesa con eucalipto y una vela' },
+  { image: 'minuta2.webp', alt: 'Minuta lila con dibujos de iconos y letras, sobre un mantel malva junto a un plato dorado' },
+  { image: 'panuelo1.webp', alt: 'Pañuelo de tela con estampado de azulejos en tonos azules, naranjas y dorados, sobre lino beige' },
+  { image: 'tarjeta1.webp', alt: 'Tarjetas de mesa con nombres en tonos verdes y terracota, junto a un rollo de papel y muestras de color' },
+  { image: 'seating1.webp', alt: 'Seating plan con tarjetas colgadas en círculos de madera, entre ramas y flores verdes' },
+  { image: 'seating2.webp', alt: 'Seating plan con tarjetas entre flores naranjas y rojas, eucalipto y hojas verdes' },
+  { image: 'seating5.webp', alt: 'Seating plan junto a una jarra de barro, con granadas, calabazas y una garrafa de cristal' },
+  { image: 'seating6.webp', alt: 'Seating plan entre calabazas, higos y ramas de eucalipto sobre una mesa rústica' },
+  { image: 'sitting1.webp', alt: 'Mesa de boda con vajilla dorada y servilleta granate, con una tarjeta escrita a mano entre flores' },
+  { image: 'sitting2.webp', alt: 'Mesa de boda con mantel verde salvia, velas lilas y una tarjeta ilustrada, entre flores y frutas' },
+  { image: 'sitting3.webp', alt: 'Mesa de boda con un plato decorado con azulejos azules, junto a una minuta y ramas de olivo' },
+  { image: 'sitting4.webp', alt: 'Mesa con salvamanteles de mimbre, servilleta enrollada con lazo verde y una tarjeta con nombre' },
+  { image: 'ilustracion-boda.webp', alt: 'Ilustración de una novia con ramo y un novio de traje azul marino, de cuerpo entero sobre fondo blanco' },
+  { image: 'ilustracion-mascota.webp', alt: 'Ilustración de un bulldog francés tumbado, enmarcada con rayas rosas y mostaza' },
+  { image: 'mapa-pareja.webp', alt: 'Ilustración de un mapa de la relacion de pareja' },
+  { image: 'mapa-pareja2.webp', alt: 'Mapa ilustrado de la historia de una pareja, con su primera cita, su primer viaje a Madrid y la frase «y la historia continúa»' },
+  { image: 'ilustracion1.webp', alt: 'Ilustración de una pareja abrigada con gorros de lana y chaquetas de invierno, sobre fondo claro' },
+  { image: 'ilustracion2.webp', alt: 'Ilustración de una pareja besándose, con chistera, camisa azul y falda de estampado azul' },
+  { image: 'ilustracion3.webp', alt: 'Ilustración de una pareja abrazada en un tablero de corcho con fotos prendidas, en una escena de salón con luz cálida' },
+  { image: 'ilustracion4.webp', alt: 'Ilustración de una pareja abrazada enmarcada sobre una cómoda de madera, junto a una lámpara y una planta' },
+  { image: 'ilustracion5.webp', alt: 'Acuarela de una pareja sentada en un banco junto al mar, enmarcada sobre una mesita de noche' },
 ];

@@ -15,11 +15,36 @@ npm run build    # outputs dist/
 
 Every push to `main` builds and deploys to GitHub Pages via `.github/workflows/deploy.yml`
 (repo Settings → Pages → Source must be **GitHub Actions**). The site is served at
-https://chillaso.github.io/amortrazado/, so `astro.config.mjs` sets `base: '/amortrazado'`.
-Internal links and images go through `url()` from `src/lib/url.ts` so they pick up the base path.
+https://amortrazado.com: `astro.config.mjs` sets `site` to that address, and `public/CNAME` tells
+GitHub Pages to serve it on the custom domain. The site has no base path, so the root of the
+domain is the root of the site.
 
-To move to the custom domain later: set `site: 'https://amortrazado.com'`, remove `base`, add
-`public/CNAME` with `amortrazado.com`, and point the DNS at GitHub Pages.
+One-time setup for the domain:
+
+- **DNS:** at the registrar, point `amortrazado.com` at GitHub Pages (A records to GitHub's Pages
+  IPs, see GitHub's docs on custom domains). For `www`, add a CNAME record pointing `www` at
+  `chillaso.github.io`. GitHub redirects
+  `www.amortrazado.com` to `amortrazado.com`, the domain in `public/CNAME`.
+- **Pages:** Settings → Pages → Custom domain should read `amortrazado.com`. Once the certificate is
+  issued, tick **Enforce HTTPS**.
+- **Contact Lambda:** its `ALLOWED_ORIGINS` must include `https://amortrazado.com`, or the browser
+  blocks the form on the live site.
+
+Internal links and images go through `url()` from `src/lib/url.ts`, so they would pick up a base
+path if one were ever set again.
+
+## Security
+
+- **Content-Security-Policy:** GitHub Pages can't send headers, so `integrations/csp.mjs` writes a
+  CSP `<meta>` into every built page: scripts only from the site itself (inline ones by hash,
+  computed after the build), fonts from Google Fonts, and requests only to the site and the
+  contact endpoint (`PUBLIC_CONTACT_ENDPOINT`, read in `astro.config.mjs`). A new third-party
+  script, font or API needs its origin added to the directives there. The policy is not applied
+  in `npm run dev`; check new things with `npm run build && npm run preview`.
+- **Form:** field lengths and the email check match the backend's validation; the request goes
+  without cookies or referrer.
+- **CI:** actions are pinned to commit SHAs, `npm ci` skips install scripts, and Dependabot
+  (`.github/dependabot.yml`) proposes npm and action updates weekly.
 
 ## Structure
 
@@ -29,10 +54,11 @@ To move to the custom domain later: set `site: 'https://amortrazado.com'`, remov
 | `src/pages/papeleria-bodas.astro` | Wedding stationery page |
 | `src/pages/ilustraciones.astro` | Custom illustration page |
 | `src/pages/portfolio.astro` | Portfolio: every past work on one board |
-| `src/data/portfolio.ts` | The portfolio works, in display order, with optional descriptions |
+| `src/data/portfolio.ts` | The portfolio works, in display order |
 | `src/components/` | One component per section |
+| `integrations/csp.mjs` | Adds the Content-Security-Policy `<meta>` to every built page |
 | `src/lib/contact-api.ts` | Sends the contact form to the backend (mocked without one, see below) |
-| `src/data/contact.ts` | Email, WhatsApp and Instagram links used everywhere |
+| `src/data/contact.ts` | Email, WhatsApp, Instagram and TikTok links used everywhere |
 | `src/assets/images/` | Every photo and illustration, used by the sections and the portfolio |
 | `public/images/logo*.webp`, `public/favicon.png` | The logo, and its stamp alone for small marks |
 | `01-resources/originals/` | Original high-resolution photos, illustrations and logo |
@@ -66,17 +92,13 @@ To show an image in the portfolio:
    {
      image: 'invitacion-lucia.jpg',          // file name in src/assets/images/
      alt: 'Invitación ilustrada con olivos',  // what the image shows (for screen readers)
-     title: 'Invitación de Lucía y Pablo',    // optional, shown in the card
-     description: 'Una invitación…',          // optional: without it the image doesn't open
-     note: 'invitación',                      // optional handwritten caption under the print
    },
    ```
 
 3. Order: the list order is the order on the page, left to right and then down. Move an entry up or
    down to reorder. To hide a work, delete (or comment out) its entry; the file can stay.
 
-A work with a `description` shows a small crimson "+" and opens a card with its title and
-description when clicked. Without a `description` it is just a picture and clicking does nothing.
+Every work shows a small crimson "+" and opens at full size when clicked.
 If an entry names a file that isn't in `src/assets/images/`, the build stops and says which one.
 
 ## Contact form

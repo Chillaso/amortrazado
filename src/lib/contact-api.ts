@@ -21,6 +21,7 @@ export type ContactResult = { ok: true } | { ok: false; error: string };
 
 const ENDPOINT = import.meta.env.PUBLIC_CONTACT_ENDPOINT as string | undefined;
 const MOCK_DELAY_MS = 900;
+const TIMEOUT_MS = 15_000;
 
 export async function sendContactRequest(data: ContactRequest): Promise<ContactResult> {
   if (ENDPOINT) {
@@ -29,6 +30,10 @@ export async function sendContactRequest(data: ContactRequest): Promise<ContactR
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
+        // Nothing of the visitor's goes along but the form: no cookies, no page address
+        credentials: 'omit',
+        referrerPolicy: 'no-referrer',
+        signal: AbortSignal.timeout(TIMEOUT_MS),
       });
       return res.ok ? { ok: true } : { ok: false, error: `HTTP ${res.status}` };
     } catch (err) {

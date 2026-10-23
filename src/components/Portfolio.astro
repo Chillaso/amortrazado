@@ -2,8 +2,8 @@
 import { Image, getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { portfolio } from '../data/portfolio';
-// Every past work pinned to one long board, in the order of src/data/portfolio.ts. Pieces with a
-// description open a paper card with it; the rest are just prints.
+// Every work pinned to one long board, in the order of src/data/portfolio.ts. A click opens the
+// piece at full size on a sheet of paper.
 
 const files = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.{png,jpg,jpeg,webp,avif}', { eager: true });
 const byName = Object.fromEntries(Object.entries(files).map(([path, mod]) => [path.split('/').pop(), mod.default]));
@@ -15,7 +15,7 @@ const works = await Promise.all(
   portfolio.map(async (work, i) => {
     const src = byName[work.image];
     if (!src) throw new Error(`Portfolio: no image "${work.image}" in src/assets/images/`);
-    const full = work.description ? await getImage({ src, width: Math.min(src.width, 1400), format: 'webp' }) : null;
+    const full = await getImage({ src, width: Math.min(src.width, 1400), format: 'webp' });
     return { ...work, src, full, tilt: tilts[i % tilts.length], tape: tapes[i % tapes.length], tapeLeft: 20 + ((i * 17) % 45) };
   }),
 );
@@ -29,37 +29,30 @@ const works = await Promise.all(
       historias que he tenido la suerte de trazar.
     </p>
     <p class="note portfolio-hint" aria-hidden="true">
-      <span class="hint-dot"></span> toca las piezas marcadas para conocer su historia
+      <span class="hint-dot"></span> toca una pieza para verla en grande
     </p>
   </header>
 
   <div class="board" role="list" data-board>
     {works.map((w) => (
-      <div class="board-item" role="listitem" data-ratio={(w.src.height / w.src.width).toFixed(3)} data-note={w.note ? 1 : 0}>
+      <div class="board-item" role="listitem" data-ratio={(w.src.height / w.src.width).toFixed(3)}>
         <figure class="print" style={`--tilt:${w.tilt}deg`} data-drop>
           {w.tape && <span class="tape" style={`--tape:${w.tape}; top:-0.7rem; left:${w.tapeLeft}%; width:4.5rem`}></span>}
-          {w.full ? (
-            <button
-              type="button"
-              class="piece-open"
-              data-title={w.title ?? ''}
-              data-description={w.description}
-              data-full={w.full.src}
-              data-width={w.full.attributes.width}
-              data-height={w.full.attributes.height}
-              data-alt={w.alt}
-              aria-haspopup="dialog"
-            >
-              <Image src={w.src} widths={[360, 560, 800]} sizes="(max-width: 36rem) 46vw, (max-width: 64rem) 46vw, 30vw" alt={w.alt} />
-              <span class="piece-badge" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
-              </span>
-              <span class="sr-only">Ver la historia{w.title ? `: ${w.title}` : ''}</span>
-            </button>
-          ) : (
+          <button
+            type="button"
+            class="piece-open"
+            data-full={w.full.src}
+            data-width={w.full.attributes.width}
+            data-height={w.full.attributes.height}
+            data-alt={w.alt}
+            aria-haspopup="dialog"
+          >
             <Image src={w.src} widths={[360, 560, 800]} sizes="(max-width: 36rem) 46vw, (max-width: 64rem) 46vw, 30vw" alt={w.alt} />
-          )}
-          {w.note && <figcaption class="note">{w.note}</figcaption>}
+            <span class="piece-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+            </span>
+            <span class="sr-only">Ver en grande</span>
+          </button>
         </figure>
       </div>
     ))}
@@ -71,20 +64,13 @@ const works = await Promise.all(
   </div>
 </section>
 
-<dialog class="story" aria-labelledby="story-title">
+<dialog class="story" aria-label="Pieza ampliada">
   <div class="story-card">
     <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:12%; --tape-tilt:-4deg"></span>
     <span class="tape" style="top:-0.6rem; right:10%; --tape-tilt:5deg"></span>
     <figure class="story-figure">
       <img alt="" />
     </figure>
-    <div class="story-text">
-      <h2 id="story-title" class="story-title"></h2>
-      <p class="story-description"></p>
-      <form method="dialog">
-        <button class="link story-close" type="submit">Cerrar</button>
-      </form>
-    </div>
     <form method="dialog" class="story-x-form">
       <button class="story-x" type="submit" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
@@ -115,7 +101,7 @@ const works = await Promise.all(
       items.forEach((item) => {
         const i = heights.indexOf(Math.min(...heights));
         cols[i].append(item);
-        heights[i] += Number(item.dataset.ratio) + (item.dataset.note === '1' ? 0.12 : 0) + 0.15;
+        heights[i] += Number(item.dataset.ratio) + 0.15;
       });
       board.replaceChildren(...cols);
       board.classList.add('is-masonry');
@@ -127,8 +113,6 @@ const works = await Promise.all(
   const dialog = document.querySelector<HTMLDialogElement>('dialog.story');
   if (dialog) {
     const img = dialog.querySelector('img')!;
-    const title = dialog.querySelector<HTMLElement>('.story-title')!;
-    const text = dialog.querySelector<HTMLElement>('.story-description')!;
     let opener: HTMLElement | null = null;
 
     document.querySelectorAll<HTMLButtonElement>('.piece-open').forEach((button) => {
@@ -138,9 +122,6 @@ const works = await Promise.all(
         img.alt = d.alt ?? '';
         img.width = Number(d.width);
         img.height = Number(d.height);
-        title.textContent = d.title ?? '';
-        title.hidden = !d.title;
-        text.textContent = d.description ?? '';
         opener = button;
         dialog.showModal();
       });
@@ -175,13 +156,13 @@ const works = await Promise.all(
     column-gap: clamp(1.25rem, 3vw, 2.5rem);
   }
   .board.is-masonry { display: flex; align-items: flex-start; gap: clamp(1.25rem, 3vw, 2.5rem); columns: auto; }
-  .board-col { flex: 1; min-width: 0; }
+  /* The columns are made by the script below, so they carry no scope attribute: match them globally */
+  .board :global(.board-col) { flex: 1; min-width: 0; }
   .board-item {
     break-inside: avoid;
     padding: 0.9rem 0.25rem clamp(1.5rem, 3vw, 2.5rem);
   }
   .board .print img { height: auto; }
-  .board .print figcaption { text-align: center; font-size: 1.3rem; color: var(--ink); }
 
   .piece-open {
     position: relative;
@@ -222,9 +203,10 @@ const works = await Promise.all(
     text-align: center;
   }
 
-  /* The story card: a sheet of paper taped over the board */
+  /* The enlarged piece: a sheet of paper taped over the board */
   .story {
-    width: min(58rem, calc(100% - 2rem));
+    width: fit-content;
+    max-width: calc(100% - 2rem);
     max-height: calc(100dvh - 3rem);
     padding: 0;
     border: 0;
@@ -235,23 +217,16 @@ const works = await Promise.all(
   .story::backdrop { background: rgb(46 27 33 / 0.6); }
   .story-card {
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: clamp(1.25rem, 3vw, 2.5rem);
-    align-items: center;
     max-height: calc(100dvh - 3rem);
     overflow: auto;
-    padding: clamp(1rem, 3vw, 2rem);
+    padding: clamp(0.75rem, 2vw, 1.25rem);
     background: var(--paper);
     border-radius: 3px;
     box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.6);
     rotate: -0.6deg;
   }
   .story-figure { margin: 0; }
-  .story-figure img { width: 100%; height: auto; max-height: 70dvh; object-fit: contain; }
-  .story-title { font-size: var(--step-head); line-height: 1.05; }
-  .story-description { margin-top: 1rem; max-width: 38ch; }
-  .story-close { margin-top: 1.75rem; padding: 0.5rem 0; border: 0; background: none; color: var(--crimson); font-size: var(--step-body); cursor: pointer; }
+  .story-figure img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 7rem); }
   .story-x-form { position: absolute; top: 0.5rem; right: 0.5rem; }
   .story-x {
     display: grid;
@@ -260,8 +235,9 @@ const works = await Promise.all(
     height: 2.75rem;
     border: 0;
     border-radius: 50%;
-    background: transparent;
+    background: var(--paper);
     color: var(--ink);
+    box-shadow: 0 2px 8px rgb(46 27 33 / 0.25);
     cursor: pointer;
   }
   .story-x svg { width: 1.4rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
@@ -275,14 +251,13 @@ const works = await Promise.all(
   }
 
   @media (max-width: 48rem) {
-    .story-card { grid-template-columns: 1fr; rotate: 0deg; padding-top: 3rem; }
-    .story-figure img { max-height: 50dvh; }
+    .story-card { rotate: 0deg; }
+    .story-figure img { max-height: calc(100dvh - 6rem); }
   }
   @media (max-width: 36rem) {
     .board { columns: 2; column-gap: 0.9rem; }
     .board.is-masonry { gap: 0.9rem; }
     .board-item { padding-inline: 0; }
-    .board .print figcaption { font-size: 1.05rem; }
     .piece-badge { width: 1.9rem; height: 1.9rem; right: 0.4rem; bottom: 0.4rem; }
   }
 </style>

@@ -30,7 +30,6 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
           loading="lazy"
           alt="Retrato de una mujer de pelo largo y ondulado, con vestido negro, ante una pared con flores dibujadas"
         />
-        <figcaption class="note">un regalo para los amigos de siempre</figcaption>
       </figure>
     </div>
 
@@ -51,19 +50,19 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
         <div class="row two">
           <div class="field">
             <label for="cf-name">Nombre <span aria-hidden="true">*</span></label>
-            <input id="cf-name" name="name" type="text" autocomplete="name" required aria-describedby="cf-name-error" />
+            <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="cf-name-error" />
             <p class="error" id="cf-name-error" data-error-for="name"></p>
           </div>
           <div class="field">
             <label for="cf-email">Email <span aria-hidden="true">*</span></label>
-            <input id="cf-email" name="email" type="email" autocomplete="email" required aria-describedby="cf-email-error" />
+            <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="cf-email-error" />
             <p class="error" id="cf-email-error" data-error-for="email"></p>
           </div>
         </div>
 
         <div class="field">
           <label for="cf-phone">Teléfono <span class="optional">(opcional, si preferís que os llame)</span></label>
-          <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+          <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" />
         </div>
 
         <fieldset class="field services" aria-describedby="cf-services-error">
@@ -86,7 +85,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
           </div>
           <div class="field">
             <label for="cf-location">Lugar o ciudad</label>
-            <input id="cf-location" name="location" type="text" autocomplete="address-level2" />
+            <input id="cf-location" name="location" type="text" autocomplete="address-level2" maxlength="120" />
           </div>
           <div class="field">
             <label for="cf-guests">Invitados</label>
@@ -105,6 +104,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
             rows="5"
             required
             minlength="10"
+            maxlength="5000"
             aria-describedby="cf-message-hint cf-message-error"
           ></textarea>
           <p class="hint" id="cf-message-hint">Estilo, colores, qué piezas os gustaría, cualquier detalle de vuestra historia.</p>
@@ -144,6 +144,9 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
 <script>
   import { sendContactRequest } from '../lib/contact-api';
 
+  // Same check as the backend (bck-contact-lambda/src/validate.mjs): a plain address only
+  const EMAIL = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)+$/;
+
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
   const sent = document.querySelector<HTMLElement>('[data-sent]');
   const alertBox = document.querySelector<HTMLElement>('[data-form-alert]');
@@ -171,7 +174,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
       const get = (k: string) => String(data.get(k) ?? '').trim();
       const errors: Record<string, string> = {};
       if (!get('name')) errors.name = messages.name;
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(get('email'))) errors.email = messages.email;
+      if (!EMAIL.test(get('email'))) errors.email = messages.email;
       if (data.getAll('services').length === 0) errors.services = messages.services;
       if (get('message').length < 10) errors.message = messages.message;
       if (!data.get('consent')) errors.consent = messages.consent;
@@ -230,7 +233,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
         showSent();
       } else {
         alertBox.textContent =
-          'No se ha podido enviar el mensaje. Revisad la conexión e intentadlo de nuevo, o escribidme a hola@amortrazado.com.';
+          'No se ha podido enviar el mensaje. Revisad la conexión e intentadlo de nuevo, o escribidme a amortrazado@gmail.com.';
         alertBox.hidden = false;
       }
     });
@@ -250,9 +253,8 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   .contact-lead { margin-top: 1.25rem; max-width: 34ch; }
   .contact-alt { margin-top: 1.75rem; font-size: var(--step-small); }
   .contact-side :global(.contact-links) { margin-top: 0.5rem; }
-  .contact-print { width: min(15rem, 70%); margin-top: 3rem; padding-bottom: 0.3rem; }
+  .contact-print { width: min(15rem, 70%); margin-top: 3rem; }
   .contact-print img { aspect-ratio: 4 / 5; }
-  .contact-print figcaption { font-size: 1.2rem; text-align: center; color: var(--ink); }
 
   .letter {
     grid-column: 6 / -1;

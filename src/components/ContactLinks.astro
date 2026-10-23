@@ -1,5 +1,5 @@
 ---
-// Email with its address, then WhatsApp and Instagram as icons only. Icons from Tabler (MIT).
+// Email with its address, then WhatsApp, Instagram and TikTok as icons only. Icons from Tabler (MIT).
 import { contact } from '../data/contact';
 
 interface Props {
@@ -32,6 +32,13 @@ const { class: className } = Astro.props;
         <path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
         <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
         <path d="M16.5 7.5v.01" />
+      </svg>
+    </a>
+  </li>
+  <li>
+    <a class="icon" href={contact.tiktok} target="_blank" rel="noopener noreferrer" aria-label={`TikTok ${contact.tiktokHandle}`}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917" />
       </svg>
     </a>
   </li>

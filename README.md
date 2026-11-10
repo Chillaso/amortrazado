@@ -41,7 +41,7 @@ path if one were ever set again.
   contact endpoint (`PUBLIC_CONTACT_ENDPOINT`, read in `astro.config.mjs`). A new third-party
   script, font or API needs its origin added to the directives there. The policy is not applied
   in `npm run dev`; check new things with `npm run build && npm run preview`.
-- **Form:** field lengths and the email check match the backend's validation; the request goes
+- **Form:** field lengths and the WhatsApp number check match the backend's validation; the request goes
   without cookies or referrer.
 - **CI:** actions are pinned to commit SHAs, `npm ci` skips install scripts, and Dependabot
   (`.github/dependabot.yml`) proposes npm and action updates weekly.
@@ -104,7 +104,7 @@ If an entry names a file that isn't in `src/assets/images/`, the build stops and
 ## Contact form
 
 The form validates in the browser and calls `sendContactRequest()` in `src/lib/contact-api.ts`,
-which POSTs it as JSON (`name, email, phone, services[], eventDate, location, guests, message,
+which POSTs it as JSON (`name, whatsapp, eventDate, guests,
 consent`) to `PUBLIC_CONTACT_ENDPOINT`. Any 2xx response counts as sent.
 
 The backend is an AWS Lambda in its own repository, `bck-contact-lambda`: it emails each request,
@@ -114,7 +114,7 @@ as pretty-printed JSON, to a configurable address. Its README covers the AWS set
   variables → Actions → Variables) to the Lambda's Function URL. The deploy workflow passes it to
   the build. Without it the form shows the error message instead of pretending to send.
 - **Locally:** without the variable, `npm run dev` simulates the request and logs it to the
-  console; an email ending in `@fallo.test` simulates a failure. To test against the real Lambda,
+  console; the name `fallo` simulates a failure. To test against the real Lambda,
   add `PUBLIC_CONTACT_ENDPOINT=https://…` to a `.env` file and add `http://localhost:4321` to the
   Lambda's `ALLOWED_ORIGINS`.
 

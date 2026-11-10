@@ -1,20 +1,26 @@
 ---
 import Contact from '../components/Contact.astro';
+import Faq from '../components/Faq.astro';
 import Hero from '../components/Hero.astro';
 import Ilustraciones from '../components/Ilustraciones.astro';
 import Packs from '../components/Packs.astro';
 import Papeleria from '../components/Papeleria.astro';
-import Process from '../components/Process.astro';
+import Reviews from '../components/Reviews.astro';
 import Statement from '../components/Statement.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Papelería de boda e ilustraciones">
+<Layout
+  title="Invitaciones de boda ilustradas y papelería personalizada en Jerez"
+  description="Invitaciones de boda ilustradas a mano y papelería personalizada desde Jerez de la Frontera (Cádiz) para toda España. Packs desde 80 €, ★ 5,0 en Bodas.net. Pide presupuesto por WhatsApp."
+  faq
+>
   <Hero />
   <Papeleria />
-  <Statement />
-  <Process />
   <Packs />
+  <Reviews />
+  <Statement />
   <Ilustraciones />
+  <Faq />
   <Contact />
 </Layout>

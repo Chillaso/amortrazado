@@ -3,12 +3,6 @@ import retratoContacto from '../assets/images/retrato-contacto.webp';
 import { contact } from '../data/contact';
 import ContactLinks from './ContactLinks.astro';
 
-const services = [
-  { value: 'invitaciones', label: 'Invitaciones' },
-  { value: 'papeleria-completa', label: 'Papelería completa' },
-  { value: 'ilustracion', label: 'Ilustración personalizada' },
-  { value: 'otro', label: 'Otra cosa' },
-];
 const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200', 'Aún no lo sé'];
 ---
 
@@ -17,9 +11,13 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
     <div class="contact-side">
       <h2 id="contact-title" class="head">¿Hablamos?</h2>
       <p class="contact-lead">
-        <span data-annotate="highlight" data-color="#f6f3f2">Contadme qué tenéis en mente</span> y os respondo con ideas y un presupuesto.
+        <span data-annotate="highlight" data-color="#f6f3f2">Dejadme vuestros datos</span> y os escribo por WhatsApp con ideas y un presupuesto sin compromiso.
       </p>
-      <p class="contact-alt">Si lo preferís, también podéis escribirme directamente:</p>
+      <a class="button wa-button" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
+        Escribidme por WhatsApp
+      </a>
+      <p class="contact-alt">O, si lo preferís, por email o redes:</p>
       <ContactLinks class="contact-links" />
       <figure class="print contact-print" style="--tilt:-3deg" data-drop>
         <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:30%; width:4.5rem"></span>
@@ -45,70 +43,43 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
         enctype="text/plain"
         novalidate
       >
-        <p class="form-intro">Los campos marcados con <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> son obligatorios.</p>
+        <p class="form-intro">Solo cuatro datos y os escribo por WhatsApp. Los marcados con <span aria-hidden="true">*</span><span class="sr-only">asterisco</span> son obligatorios.</p>
 
         <div class="row two">
           <div class="field">
-            <label for="cf-name">Nombre <span aria-hidden="true">*</span></label>
+            <label for="cf-name">Vuestro nombre <span aria-hidden="true">*</span></label>
             <input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" required aria-describedby="cf-name-error" />
             <p class="error" id="cf-name-error" data-error-for="name"></p>
           </div>
           <div class="field">
-            <label for="cf-email">Email <span aria-hidden="true">*</span></label>
-            <input id="cf-email" name="email" type="email" autocomplete="email" maxlength="254" required aria-describedby="cf-email-error" />
-            <p class="error" id="cf-email-error" data-error-for="email"></p>
+            <label for="cf-whatsapp">WhatsApp <span aria-hidden="true">*</span></label>
+            <input
+              id="cf-whatsapp"
+              name="whatsapp"
+              type="tel"
+              autocomplete="tel"
+              inputmode="tel"
+              maxlength="40"
+              placeholder="600 000 000"
+              required
+              aria-describedby="cf-whatsapp-error"
+            />
+            <p class="error" id="cf-whatsapp-error" data-error-for="whatsapp"></p>
           </div>
         </div>
 
-        <div class="field">
-          <label for="cf-phone">Teléfono <span class="optional">(opcional, si preferís que os llame)</span></label>
-          <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" />
-        </div>
-
-        <fieldset class="field services" aria-describedby="cf-services-error">
-          <legend>¿Qué necesitáis? <span aria-hidden="true">*</span></legend>
-          <div class="chips">
-            {services.map((s) => (
-              <label class="chip">
-                <input type="checkbox" name="services" value={s.value} />
-                <span>{s.label}</span>
-              </label>
-            ))}
-          </div>
-          <p class="error" id="cf-services-error" data-error-for="services"></p>
-        </fieldset>
-
-        <div class="row three">
+        <div class="row two">
           <div class="field">
-            <label for="cf-date">Fecha del evento</label>
+            <label for="cf-date">Fecha de la boda</label>
             <input id="cf-date" name="eventDate" type="date" />
           </div>
           <div class="field">
-            <label for="cf-location">Lugar o ciudad</label>
-            <input id="cf-location" name="location" type="text" autocomplete="address-level2" maxlength="120" />
-          </div>
-          <div class="field">
-            <label for="cf-guests">Invitados</label>
+            <label for="cf-guests">Número de invitados</label>
             <select id="cf-guests" name="guests">
               <option value="">Elegid una opción</option>
               {guests.map((g) => <option value={g}>{g}</option>)}
             </select>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="cf-message">Contadme vuestra idea <span aria-hidden="true">*</span></label>
-          <textarea
-            id="cf-message"
-            name="message"
-            rows="5"
-            required
-            minlength="10"
-            maxlength="5000"
-            aria-describedby="cf-message-hint cf-message-error"
-          ></textarea>
-          <p class="hint" id="cf-message-hint">Estilo, colores, qué piezas os gustaría, cualquier detalle de vuestra historia.</p>
-          <p class="error" id="cf-message-error" data-error-for="message"></p>
         </div>
 
         <div class="hp" aria-hidden="true">
@@ -126,7 +97,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
 
         <p class="form-alert" role="alert" data-form-alert hidden></p>
 
-        <button class="button submit" type="submit" data-submit>Enviar mensaje</button>
+        <button class="button submit" type="submit" data-submit>Quiero mi presupuesto</button>
       </form>
 
       <div class="sent" data-sent hidden tabindex="-1">
@@ -144,8 +115,10 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
 <script>
   import { sendContactRequest } from '../lib/contact-api';
 
-  // Same check as the backend (bck-contact-lambda/src/validate.mjs): a plain address only
-  const EMAIL = /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)+$/;
+  // Same check as the backend (bck-contact-lambda/src/validate.mjs): digits with an optional +,
+  // spaces, dots, dashes or brackets, and between 9 and 15 digits in all
+  const PHONE = /^\+?[\d\s().-]{9,25}$/;
+  const digits = (text: string) => text.replace(/\D/g, '').length;
 
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
   const sent = document.querySelector<HTMLElement>('[data-sent]');
@@ -155,9 +128,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   if (form && sent && alertBox && submit) {
     const messages: Record<string, string> = {
       name: 'Escribid vuestro nombre.',
-      email: 'Escribid un email válido, por ejemplo nombre@correo.com.',
-      services: 'Elegid al menos una opción.',
-      message: 'Contadme un poco más (al menos 10 caracteres).',
+      whatsapp: 'Escribid un número de WhatsApp válido, por ejemplo 600 000 000.',
       consent: 'Necesito vuestro permiso para poder responderos.',
     };
 
@@ -174,12 +145,11 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
       const get = (k: string) => String(data.get(k) ?? '').trim();
       const errors: Record<string, string> = {};
       if (!get('name')) errors.name = messages.name;
-      if (!EMAIL.test(get('email'))) errors.email = messages.email;
-      if (data.getAll('services').length === 0) errors.services = messages.services;
-      if (get('message').length < 10) errors.message = messages.message;
+      const phone = get('whatsapp');
+      if (!PHONE.test(phone) || digits(phone) < 9 || digits(phone) > 15) errors.whatsapp = messages.whatsapp;
       if (!data.get('consent')) errors.consent = messages.consent;
       for (const f of Object.keys(messages)) showError(f, errors[f] ?? '');
-      return { data, get, errors };
+      return { get, errors };
     };
 
     // Once a field has been flagged, clear its message as soon as it is fixed
@@ -191,7 +161,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       alertBox.hidden = true;
-      const { data, get, errors } = validate();
+      const { get, errors } = validate();
       const first = Object.keys(messages).find((f) => errors[f]);
       if (first) {
         form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
@@ -199,10 +169,9 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
       }
 
       const name = get('name');
-      const email = get('email');
       const showSent = () => {
         const text = sent.querySelector<HTMLElement>('[data-sent-text]');
-        if (text) text.textContent = `Gracias, ${name}. Os respondo en uno o dos días a ${email}.`;
+        if (text) text.textContent = `Gracias, ${name}. Os escribo por WhatsApp en uno o dos días.`;
         form.hidden = true;
         sent.hidden = false;
         sent.focus();
@@ -216,24 +185,20 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
       submit.textContent = 'Enviando…';
       const result = await sendContactRequest({
         name,
-        email,
-        phone: get('phone') || undefined,
-        services: data.getAll('services').map(String),
+        whatsapp: get('whatsapp'),
         eventDate: get('eventDate') || undefined,
-        location: get('location') || undefined,
         guests: get('guests') || undefined,
-        message: get('message'),
         consent: true,
       });
       submit.disabled = false;
-      submit.textContent = 'Enviar mensaje';
+      submit.textContent = 'Quiero mi presupuesto';
 
       if (result.ok) {
         form.reset();
         showSent();
       } else {
         alertBox.textContent =
-          'No se ha podido enviar el mensaje. Revisad la conexión e intentadlo de nuevo, o escribidme a amortrazado@gmail.com.';
+          'No se ha podido enviar. Revisad la conexión e intentadlo de nuevo, o escribidme directamente por WhatsApp o a amortrazado@gmail.com.';
         alertBox.hidden = false;
       }
     });
@@ -251,7 +216,10 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   .contact-grid { align-items: start; row-gap: 3rem; }
   .contact-side { grid-column: 1 / span 4; }
   .contact-lead { margin-top: 1.25rem; max-width: 34ch; }
-  .contact-alt { margin-top: 1.75rem; font-size: var(--step-small); }
+  .wa-button { justify-self: start; margin-top: 1.75rem; background: #1f7a4d; }
+  .wa-button svg { width: 1.4rem; height: 1.4rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  @media (hover: hover) and (pointer: fine) { .wa-button:hover { background-color: #17603c; } }
+  .contact-alt { margin-top: 1.5rem; font-size: var(--step-small); }
   .contact-side :global(.contact-links) { margin-top: 0.5rem; }
   .contact-print { width: min(15rem, 70%); margin-top: 3rem; }
   .contact-print img { aspect-ratio: 4 / 5; }
@@ -270,7 +238,6 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   .form-intro { font-size: var(--step-small); color: var(--muted); }
   .row { display: grid; gap: 1.4rem 1rem; }
   .row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
   .field { display: grid; gap: 0.4rem; min-width: 0; border: 0; padding: 0; margin: 0; }
   .field label, .field legend {
@@ -281,11 +248,9 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   }
   .optional { font-weight: 400; color: var(--muted); }
   .field input[type='text'],
-  .field input[type='email'],
   .field input[type='tel'],
   .field input[type='date'],
-  .field select,
-  .field textarea {
+  .field select {
     width: 100%;
     min-height: 3rem;
     padding: 0.7rem 0.9rem;
@@ -295,35 +260,15 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
     font-size: 1rem;
     transition: border-color 160ms ease, background-color 160ms ease;
   }
-  .field textarea { resize: vertical; min-height: 8rem; line-height: 1.5; }
-  .field :is(input, select, textarea):focus-visible {
+  .field :is(input, select):focus-visible {
     outline: none;
     border-color: var(--crimson);
     background: #fff;
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--crimson) 18%, transparent);
   }
   .field [aria-invalid='true'] { border-color: var(--crimson); }
-  .hint { font-size: 0.875rem; color: var(--muted); }
   .error { font-size: 0.875rem; color: var(--crimson); font-weight: 600; min-height: 0; }
   .error:empty { display: none; }
-
-  .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.2rem; }
-  .chip { position: relative; cursor: pointer; }
-  .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
-  .chip span {
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
-    padding: 0.35rem 1.1rem;
-    border: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent);
-    border-radius: var(--cut);
-    font-size: 1rem;
-    font-weight: 400;
-    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
-  }
-  .chip input:checked + span { background: var(--crimson); border-color: var(--crimson); color: #fff; }
-  .chip input:focus-visible + span { outline: 2px solid var(--crimson); outline-offset: 3px; }
-  .has-error .chip span { border-color: var(--crimson); }
 
   .check { display: flex; gap: 0.7rem; align-items: flex-start; font-weight: 400 !important; cursor: pointer; }
   .check input { width: 1.25rem; height: 1.25rem; margin: 0.15rem 0 0; accent-color: var(--crimson); flex: none; }
@@ -355,7 +300,7 @@ const guests = ['Menos de 50', 'Entre 50 y 100', 'Entre 100 y 200', 'Más de 200
   @media (max-width: 40rem) {
     .contact-side { display: block; }
     .contact-print { display: none; }
-    .row.two, .row.three { grid-template-columns: 1fr; }
+    .row.two { grid-template-columns: 1fr; }
     .submit { justify-self: stretch; }
   }
 </style>

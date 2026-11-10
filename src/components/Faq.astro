@@ -1,0 +1,88 @@
+---
+// Frequently asked questions as folded notes. The questions live in src/data/faq.ts; the page that
+// shows this also gives them to search engines (FAQPage structured data in the layout).
+import { faq } from '../data/faq';
+import { whatsappLink } from '../data/contact';
+---
+
+<section id="preguntas-frecuentes" class="faq wrap section" aria-labelledby="faq-title">
+  <div class="grid faq-grid">
+    <div class="faq-side">
+      <h2 id="faq-title" class="head">Preguntas frecuentes</h2>
+      <p>Señal, revisiones, impresión, envíos… Lo que más me preguntáis antes de empezar.</p>
+      <p class="faq-ask">
+        ¿No encontráis vuestra duda?
+        <a
+          class="link"
+          href={whatsappLink('¡Hola Marina! Vengo de la web de Amor Trazado y tengo una duda:')}
+          target="_blank"
+          rel="noopener noreferrer"
+        >Preguntadme por WhatsApp</a>.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      {faq.map((f, i) => (
+        <details class="faq-item" name="faq" open={i === 0}>
+          <summary>
+            <h3>{f.q}</h3>
+            <span class="plus" aria-hidden="true"></span>
+          </summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq { background: var(--surface); }
+  .faq-grid { align-items: start; row-gap: 2.5rem; }
+  .faq-side { grid-column: 1 / span 4; position: sticky; top: 2rem; }
+  .faq-side p { margin-top: 1.25rem; max-width: 32ch; }
+  .faq-list { grid-column: 6 / -1; display: grid; gap: 0.9rem; }
+
+  .faq-item {
+    background: var(--paper);
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgb(46 27 33 / 0.08), 0 10px 24px -18px rgb(46 27 33 / 0.4);
+  }
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding: 1rem 1.25rem;
+    list-style: none;
+    cursor: pointer;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item h3 {
+    font-size: var(--step-body);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0;
+    font-variation-settings: 'SOFT' 50, 'WONK' 0;
+  }
+  .faq-item p { padding: 0 1.25rem 1.25rem; max-width: 62ch; }
+  .plus { position: relative; flex: none; width: 1.1rem; height: 1.1rem; }
+  .plus::before, .plus::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--crimson);
+    border-radius: 2px;
+    transition: rotate 260ms var(--ease-out);
+  }
+  .plus::after { rotate: 90deg; }
+  .faq-item[open] .plus::after { rotate: 0deg; }
+  .faq-item summary:focus-visible { outline-offset: -2px; }
+
+  @media (max-width: 64rem) {
+    .faq-side, .faq-list { grid-column: 1 / -1; }
+    .faq-side { position: static; }
+  }
+</style>

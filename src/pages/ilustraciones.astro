@@ -1,15 +1,18 @@
 ---
 import Contact from '../components/Contact.astro';
 import Ilustraciones from '../components/Ilustraciones.astro';
+import Reviews from '../components/Reviews.astro';
 import Statement from '../components/Statement.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
-  title="Ilustraciones personalizadas"
-  description="Ilustraciones personalizadas hechas a mano: retratos de pareja, de familia, de amigos y de mascotas. Un regalo lleno de significado."
+  title="Ilustraciones personalizadas y retratos de pareja para regalar"
+  description="Ilustraciones personalizadas hechas a mano: retratos de pareja desde 30 €, mapas de pareja desde 45 €, retratos de familia, amigos y mascotas. Un regalo lleno de significado."
+  breadcrumb="Ilustraciones"
 >
   <Ilustraciones level="h1" />
   <Statement />
+  <Reviews />
   <Contact />
 </Layout>

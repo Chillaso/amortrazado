@@ -27,7 +27,7 @@ const items = [
   <div class="grid papeleria-grid">
     <div class="papeleria-text">
       <Heading id="papeleria-title" class={level === 'h1' ? 'page-title' : 'head'}>
-        Papelería para eventos
+        Papelería de boda personalizada
       </Heading>
       <p class="papeleria-intro">
         Cada celebración tiene una historia que merece ser contada. Diseño papelería personalizada
@@ -39,8 +39,8 @@ const items = [
         {items.map((i) => <li>{i}</li>)}
       </ul>
       <p class="papeleria-print">
-        Si lo necesitáis, también me encargo de la impresión, con papeles de alta calidad y acabados
-        cuidados al detalle.
+        Invitaciones desde 50 € y packs completos desde 80 €. Si lo necesitáis, también me encargo
+        de la impresión, con papeles de alta calidad y acabados cuidados al detalle.
       </p>
       <a class="button" href={url('/portfolio/')}>Ver el portfolio</a>
     </div>
@@ -86,10 +86,6 @@ const items = [
           alt="Una novia sostiene la invitación ilustrada de Berta y Javier junto a su ramo"
         />
       </figure>
-      <p data-float="20" class="note pile-note n-menu" aria-hidden="true">la minuta</p>
-      <p data-float="20" class="note pile-note n-std" aria-hidden="true">Save the date</p>
-      <p data-float="20" class="note pile-note n-seating" aria-hidden="true">Seating plan</p>
-      <p data-float="20" class="note pile-note n-invitacion" aria-hidden="true">Invitación de boda</p>
     </div>
   </div>
 </section>
@@ -127,11 +123,6 @@ const items = [
   .p-invitacion { left: 4%; bottom: 0; width: 34%; }
   .p-invitacion img { aspect-ratio: 4 / 5; }
 
-  .pile-note { position: absolute; font-size: 1.35rem; }
-  .n-menu { left: 4%; top: 52%; rotate: -4deg; }
-  .n-std { right: 6%; top: 41.5%; rotate: 3deg; }
-  .n-seating { right: 4%; bottom: 9%; rotate: -2deg; }
-  .n-invitacion { left: 42%; bottom: 3%; rotate: 2deg; }
 
   @media (max-width: 64rem) {
     .papeleria-text, .pile { grid-column: 1 / -1; }
@@ -144,6 +135,5 @@ const items = [
     .p-std { width: 48%; top: 4%; }
     .p-seating { width: 72%; top: 46%; }
     .p-invitacion { width: 44%; }
-    .pile-note { display: none; }
   }
 </style>

@@ -7,13 +7,9 @@
 
 export interface ContactRequest {
   name: string;
-  email: string;
-  phone?: string;
-  services: string[];
+  whatsapp: string;
   eventDate?: string;
-  location?: string;
   guests?: string;
-  message: string;
   consent: boolean;
 }
 
@@ -43,10 +39,10 @@ export async function sendContactRequest(data: ContactRequest): Promise<ContactR
 
   if (import.meta.env.PROD) return { ok: false, error: 'PUBLIC_CONTACT_ENDPOINT is not set' };
 
-  // Mock: wait like a real request would. An email ending in @fallo.test simulates a failure,
-  // so the error state can be checked without a backend.
+  // Mock: wait like a real request would. The name "fallo" simulates a failure, so the error
+  // state can be checked without a backend.
   await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
-  if (data.email.toLowerCase().endsWith('@fallo.test')) return { ok: false, error: 'mock failure' };
+  if (data.name.trim().toLowerCase() === 'fallo') return { ok: false, error: 'mock failure' };
   console.info('[contact mock] Solicitud que se enviaría por email:', data);
   return { ok: true };
 }

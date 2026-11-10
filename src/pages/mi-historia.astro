@@ -1,0 +1,147 @@
+---
+// Where the brand comes from: Marina's own wedding. To show the stationery of that wedding, drop a
+// photo named mi-boda.webp into src/assets/images/ and it appears beside the story.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import retratoContacto from '../assets/images/retrato-contacto.webp';
+import Contact from '../components/Contact.astro';
+import Reviews from '../components/Reviews.astro';
+import { contact, whatsappLink } from '../data/contact';
+import Layout from '../layouts/Layout.astro';
+import { url } from '../lib/url';
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/images/mi-boda.{png,jpg,jpeg,webp,avif}', { eager: true });
+const ourWedding = Object.values(files)[0]?.default;
+
+const promises = [
+  ['Escucharos antes de dibujar', 'Cada proyecto empieza por vuestra historia: cómo os conocisteis, qué os gusta, qué queréis que sientan vuestros invitados.'],
+  ['Ni una plantilla', 'Todo se dibuja desde cero, a mano, para vosotros. Ninguna boda se parece a otra, y su papelería tampoco debería.'],
+  ['Cerca de principio a fin', 'Me tenéis a un WhatsApp de distancia durante todo el proceso, como me habría gustado tener a alguien en mi boda.'],
+];
+---
+
+<Layout
+  title="Mi historia: cómo nació Amor Trazado"
+  description="Soy Marina, ilustradora en Jerez de la Frontera. Amor Trazado nació al diseñar y dibujar a mano la papelería de mi propia boda. Esta es mi historia."
+  type="AboutPage"
+  breadcrumb="Mi historia"
+>
+  <article class="story wrap section" aria-labelledby="story-title">
+    <div class="grid story-grid">
+      <header class="story-head">
+        <p class="note story-kicker">Hola, soy {contact.owner}</p>
+        <h1 id="story-title" class="page-title">Mi historia</h1>
+        <p class="lead story-lead">
+          Amor Trazado nació en <span data-annotate="highlight" data-color="#e8cbbf">mi propia boda</span>.
+        </p>
+      </header>
+
+      <div class="story-text">
+        <p>
+          Soy {contact.owner}, ilustradora y diseñadora en {contact.city}. Cuando empezamos a preparar
+          nuestra boda, buscaba una papelería que hablara de nosotros, que al abrir la invitación
+          cualquiera supiera quiénes éramos. No la encontré. Así que cogí el lápiz.
+        </p>
+        <p>
+          Dibujé nuestra invitación, el seating plan, las minutas… Cada pieza llevaba un guiño a
+          nuestra historia: los lugares, las fechas, los pequeños detalles que solo nosotros
+          entendíamos. Y pasó algo que no esperaba: nuestros invitados las guardaban, les hacían
+          fotos y preguntaban quién las había hecho.
+        </p>
+        <p>
+          Ahí entendí que la papelería no es un trámite. Es <strong>lo primero que vuestros invitados
+          saben de vuestra boda y lo último que se llevan a casa</strong>. Es la forma de decirles,
+          antes de que lleguen, que ese día va a hablar de vosotros.
+        </p>
+        <p>
+          Por eso nació Amor Trazado: para hacer con vuestra boda lo mismo que hice con la mía.
+          Escucharos, conocer vuestra historia y trazarla con el mismo cariño, pieza a pieza.
+        </p>
+      </div>
+
+      <div class="story-prints">
+        <figure class="print story-print" style="--tilt:-2.5deg" data-drop>
+          <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:30%; width:4.5rem"></span>
+          <img src={retratoContacto.src} width="720" height="900" alt={`Retrato ilustrado de ${contact.owner}, de pelo largo y ondulado, con vestido negro, ante una pared con flores dibujadas`} />
+          <figcaption class="note">{contact.owner}, detrás de cada trazo</figcaption>
+        </figure>
+        {ourWedding && (
+          <figure class="print story-print story-print-2" style="--tilt:3deg" data-drop>
+            <span class="tape" style="top:-0.6rem; right:20%; --tape-tilt:5deg"></span>
+            <Image src={ourWedding} widths={[360, 560]} sizes="20rem" alt="La papelería que diseñé para mi propia boda" />
+            <figcaption class="note">la papelería de nuestra boda</figcaption>
+          </figure>
+        )}
+      </div>
+    </div>
+
+    <div class="promises">
+      <h2 class="promises-title">Lo que me prometí al empezar</h2>
+      <ol>
+        {promises.map(([title, text]) => (
+          <li>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="story-end">
+      <p class="lead">¿Me contáis la vuestra?</p>
+      <div class="story-actions">
+        <a class="button" href={whatsappLink('¡Hola Marina! He leído tu historia en la web y me gustaría contarte la nuestra.')} target="_blank" rel="noopener noreferrer">Escribidme por WhatsApp</a>
+        <a class="button ghost" href={url('/#packs')}>Ver los packs</a>
+      </div>
+    </div>
+  </article>
+  <Reviews />
+  <Contact />
+</Layout>
+
+<style>
+  .story-grid { align-items: start; row-gap: 2.5rem; }
+  .story-head { grid-column: 1 / -1; max-width: 48rem; }
+  .story-kicker { rotate: -2deg; font-size: 1.75rem; }
+  .page-title { margin-top: 0.25rem; font-size: var(--step-display); line-height: 0.98; letter-spacing: -0.03em; }
+  .story-lead { margin-top: 1.25rem; }
+  .story-text { grid-column: 1 / span 6; }
+  .story-text p { max-width: 58ch; }
+  .story-text p + p { margin-top: 1.25rem; }
+  .story-text strong { font-weight: 600; color: var(--crimson); }
+  .story-prints { grid-column: 8 / -1; position: relative; display: grid; gap: 2.5rem; justify-items: center; }
+  .story-print { width: min(20rem, 100%); }
+  .story-print img { aspect-ratio: 4 / 5; }
+  .story-print figcaption { text-align: center; font-size: 1.35rem; }
+
+  .promises { margin-top: clamp(4rem, 8vw, 6rem); }
+  .promises-title { font-size: var(--step-head); }
+  .promises ol {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem var(--gutter);
+    margin-top: 2.5rem;
+    padding: 0;
+    list-style: none;
+    counter-reset: promise;
+  }
+  .promises li { counter-increment: promise; padding-top: 1rem; border-top: 1.5px solid var(--crimson); }
+  .promises li::before {
+    content: counter(promise);
+    display: block;
+    font-family: var(--hand);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--crimson);
+  }
+  .promises h3 { margin-top: 0.5rem; font-size: var(--step-lead); line-height: 1.15; }
+  .promises p { margin-top: 0.75rem; max-width: 36ch; }
+
+  .story-end { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; margin-top: clamp(3.5rem, 7vw, 5rem); }
+  .story-actions { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
+
+  @media (max-width: 64rem) {
+    .story-text, .story-prints { grid-column: 1 / -1; }
+    .promises ol { grid-template-columns: 1fr; max-width: 40rem; }
+  }
+</style>

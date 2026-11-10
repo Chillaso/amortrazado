@@ -6,6 +6,9 @@ import ilusPerro from '../assets/images/ilus-perro.webp';
 import ilusInvierno from '../assets/images/ilus-invierno.webp';
 import mapaPareja from '../assets/images/mapa-pareja.webp';
 import { url } from '../lib/url';
+import { giftPrices } from '../data/prices';
+import { whatsappLink } from '../data/contact';
+import PriceList from './PriceList.astro';
 // Custom portraits hung close together, the way they end up on a wall at home.
 interface Props {
   level?: 'h1' | 'h2';
@@ -30,8 +33,14 @@ const Heading = level;
         compartir o conservar. Cada trazo nace de algo especial, porque detrás de cada ilustración hay
         mucho más que un dibujo: <span data-annotate="underline">hay una historia que merece ser contada</span>.
       </p>
+      <PriceList class="ilus-prices" title="Regalos e ilustración" items={giftPrices} />
       <div class="ilus-actions">
-        <a class="button" href="#contacto">Encargar una ilustración</a>
+        <a
+          class="button"
+          href={whatsappLink('¡Hola Marina! Vengo de la web de Amor Trazado y me gustaría encargar una ilustración personalizada.')}
+          target="_blank"
+          rel="noopener noreferrer"
+        >Encargar una ilustración</a>
         <a class="button ghost" href={url('/portfolio/')}>Ver el portfolio</a>
       </div>
     </div>
@@ -68,6 +77,7 @@ const Heading = level;
   .page-title { font-size: var(--step-display); line-height: 0.98; letter-spacing: -0.03em; }
   .ilus-text p { margin-top: 1.25rem; max-width: 38ch; }
   .ilus-text .ilus-lead { margin-top: 1.5rem; font-size: var(--step-lead); line-height: 1.3; }
+  .ilus-text :global(.ilus-prices) { --price-bg: var(--surface); margin-top: 2.25rem; max-width: 30rem; }
   .ilus-actions { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; margin-top: 2rem; }
 
   .wall {

@@ -2,6 +2,7 @@
 import papeleriaCollage from '../assets/images/papeleria-collage.webp';
 import invitacionFlores from '../assets/images/invitacion-flores.webp';
 import ilusAmigas from '../assets/images/ilus-amigas.webp';
+import { contact } from '../data/contact';
 // The headline is traced by hand as the page opens; beside it, the stationery laid on the table.
 ---
 
@@ -15,15 +16,21 @@ import ilusAmigas from '../assets/images/ilus-amigas.webp';
         </svg>
       </h1>
       <p class="hero-sentence">
-        Cada historia tiene algo que la hace única, y merece una forma especial de contarla. En Amor
-        Trazado, transformo momentos, recuerdos y emociones en ilustraciones y papelería personalizada,
-        cuidando cada detalle para que hable de quienes sois y de aquello que os hace especiales.
-        Porque, a veces, son las pequeñas cosas las que guardan los sentimientos más grandes.
+        Cada historia tiene algo que la hace única. Transformo momentos, recuerdos y emociones en
+        invitaciones, papelería e ilustraciones personalizadas, cuidando cada detalle para que hablen
+        de quienes sois.
       </p>
       <div class="hero-actions">
-        <a class="button" href="#contacto">Pedir presupuesto</a>
-        <a class="link" href="#packs">Ver los packs</a>
+        <a class="button" href={contact.whatsapp} target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
+          Pedir presupuesto por WhatsApp
+        </a>
+        <a class="link" href="#packs">Ver packs desde 80 €</a>
       </div>
+      <p class="hero-proof">
+        <span class="hero-stars" aria-hidden="true">★★★★★</span>
+        <a class="link" href="#opiniones">5,0 en Bodas.net</a> · el 100 % de las parejas lo recomienda
+      </p>
     </div>
 
     <div class="hero-collage" data-pile>
@@ -105,6 +112,9 @@ import ilusAmigas from '../assets/images/ilus-amigas.webp';
   }
 
   .hero-sentence { margin-top: 1.75rem; max-width: 36ch; }
+  .hero-actions .button svg { width: 1.35rem; height: 1.35rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .hero-proof { margin-top: 1.5rem; font-size: var(--step-small); color: var(--muted); }
+  .hero-stars { color: var(--crimson); letter-spacing: 0.1em; margin-right: 0.35rem; }
   .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.75rem; margin-top: 2.25rem; }
 
   .hero-collage {

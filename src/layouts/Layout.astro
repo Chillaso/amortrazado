@@ -2,20 +2,39 @@
 import '../styles/global.css';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
 import { url } from '../lib/url';
+import { breadcrumb as breadcrumbLd, business, faqPage, jsonLd, SITE_NAME, webPage, website } from '../lib/seo';
 import papeleriaCollage from '../assets/images/papeleria-collage.webp';
 
 interface Props {
   title: string;
   description?: string;
+  /** schema.org page type: WebPage, AboutPage, CollectionPage… */
+  type?: string;
+  /** The page's name in the breadcrumb search engines show (none on the home page) */
+  breadcrumb?: string;
+  /** The page shows the FAQ section: describe it to search engines too */
+  faq?: boolean;
 }
 
 const {
   title,
-  description = 'Papelería de boda e ilustraciones personalizadas, dibujadas a mano y hechas con alma.',
+  description = 'Invitaciones de boda ilustradas a mano y papelería personalizada desde Jerez de la Frontera para toda España. Packs desde 80 €. ★ 5,0 en Bodas.net.',
+  type = 'WebPage',
+  breadcrumb,
+  faq = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(papeleriaCollage.src, Astro.site);
+const fullTitle = `${title} | ${SITE_NAME}`;
+const ld = jsonLd([
+  business(new URL('/favicon.png', Astro.site).href, ogImage.href),
+  website,
+  webPage(canonical.href, fullTitle, description, type),
+  ...(breadcrumb ? [breadcrumbLd(canonical.href, breadcrumb)] : []),
+  ...(faq ? [faqPage(canonical.href)] : []),
+]);
 ---
 
 <!doctype html>
@@ -24,14 +43,29 @@ const ogImage = new URL(papeleriaCollage.src, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content={SITE_NAME} />
     <meta name="theme-color" content="#a92b4b" />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es-ES" href={canonical} />
+    <link rel="sitemap" type="application/xml" href={url('/sitemap.xml')} />
     <link rel="icon" type="image/png" href={url('/favicon.png')} />
+    <link rel="apple-touch-icon" href={url('/favicon.png')} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={`${title} | Amor Trazado`} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(papeleriaCollage.width)} />
+    <meta property="og:image:height" content={String(papeleriaCollage.height)} />
+    <meta property="og:image:alt" content="Papelería de boda ilustrada de Amor Trazado: invitación, minuta, timeline y tarjetas en tonos lila" />
     <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={ld} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -44,7 +78,7 @@ const ogImage = new URL(papeleriaCollage.src, Astro.site);
         setTimeout(() => { if (!window.__fx) document.documentElement.classList.remove('fx'); }, 3000);
       }
     </script>
-    <title>{title} | Amor Trazado</title>
+    <title>{fullTitle}</title>
   </head>
   <body>
     <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -53,6 +87,7 @@ const ogImage = new URL(papeleriaCollage.src, Astro.site);
       <slot />
     </main>
     <Footer />
+    <WhatsAppFloat />
     <script>
       import '../scripts/handmade';
     </script>

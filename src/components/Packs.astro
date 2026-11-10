@@ -1,96 +1,88 @@
 ---
-// The packs as hand-cut cards in the brand colours, laid loosely on the table.
-const packs = [
-  {
-    name: 'Ilustración sencilla',
-    note: '2 revisiones',
-    items: ['Retrato o elemento único', 'Entrega digital o impresa'],
-    tone: 'crimson',
-    tilt: -1.5,
-  },
-  {
-    name: 'Papelería de boda completa',
-    note: 'revisiones a medida',
-    items: [
-      'Invitación y sobres',
-      'Seating plan',
-      'Minutas y meseros',
-      'Tarjetas',
-      'Sello de pareja',
-      'Diseños personalizados',
-    ],
-    tone: 'blush',
-    tilt: 1,
-    featured: true,
-  },
-  {
-    name: 'Invitación',
-    note: '3 revisiones',
-    items: ['Ilustración y diseño', 'Sobres (opcional)', 'Versión digital e impresión', 'Asesoría de estilo'],
-    tone: 'sage',
-    tilt: 1.2,
-  },
-  {
-    name: 'Ilustración y papelería',
-    note: 'digital e impresa',
-    items: ['Retrato de la pareja', 'Invitación y sobres', 'Cartelería'],
-    tone: 'sage',
-    tilt: -1,
-  },
-  {
-    name: 'Pack digital',
-    note: 'como extra',
-    items: ['Invitación digital animada', 'Plantillas editables', 'Ilustraciones para redes'],
-    tone: 'crimson',
-    tilt: 1.6,
-  },
-];
+// The three wedding packs as hand-cut cards, the middle one (the most chosen) raised and marked,
+// followed by the "from" price of each loose piece. Everything comes from src/data/prices.ts.
+import { euros, packs, weddingPrices } from '../data/prices';
+import { whatsappLink } from '../data/contact';
+import PriceList from './PriceList.astro';
+
+const tones = ['crimson', 'sage', 'ink'];
+const tilts = [-1.2, 0, 1.2];
 ---
 
 <section id="packs" class="packs wrap section" aria-labelledby="packs-title">
   <div class="packs-head">
-    <h2 id="packs-title" class="head">Packs</h2>
+    <h2 id="packs-title" class="head">Packs de papelería de boda</h2>
     <p>
-      Cada boda es distinta: contadme vuestra fecha y cuántas piezas necesitáis y os preparo un
-      presupuesto cerrado, <span data-annotate="circle" data-padding="6">sin compromiso</span>.
+      Tres formas de vestir vuestra boda con la misma historia. Los precios son de partida: contadme
+      vuestra fecha y qué piezas necesitáis y os preparo un presupuesto cerrado,
+      <span data-annotate="circle" data-padding="6">sin compromiso</span>.
     </p>
-    <a class="button" href="#contacto">Pedir presupuesto</a>
   </div>
 
   <ul class="cards" data-deal-group>
-    {packs.map((p) => (
-      <li data-deal class={`card tone-${p.tone}${p.featured ? ' featured' : ''}`} style={`--tilt:${p.tilt}deg`}>
-        <h3>{p.name}</h3>
+    {packs.map((p, i) => (
+      <li
+        data-deal
+        class:list={['card', `tone-${tones[i]}`, { featured: p.featured }]}
+        style={`--tilt:${tilts[i]}deg`}
+        aria-labelledby={`pack-${p.id}`}
+      >
+        {p.featured && <p class="badge">La opción más elegida</p>}
+        <div class="card-top">
+          <p class="card-kicker">Pack</p>
+          <h3 id={`pack-${p.id}`}>{p.name}</h3>
+          <p class="tagline">{p.tagline}</p>
+        </div>
+        <p class="price">
+          <span class="price-from">desde</span>
+          <span class="price-amount">{euros(p.price)}</span>
+        </p>
+        <p class="per-guest">{p.perGuest}</p>
         <ul class="checks">
-          {p.items.map((i) => <li>{i}</li>)}
+          {p.items.map((item) => <li>{item}</li>)}
         </ul>
-        <p class="note card-note">{p.note}</p>
+        <a
+          class:list={['button', 'card-cta', { ghost: !p.featured }]}
+          href={whatsappLink(`¡Hola Marina! Vengo de la web de Amor Trazado y me interesa el pack ${p.name}. ¿Me das más información?`)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Me interesa este pack
+        </a>
       </li>
     ))}
   </ul>
+
+  <div class="loose">
+    <div class="loose-text">
+      <h3 class="loose-title">¿Solo necesitáis alguna pieza?</h3>
+      <p>
+        También diseño cada pieza por separado. Estos son los precios de partida; el final depende
+        del número de invitados y de lo que queráis incluir.
+      </p>
+      <p class="small muted">Precios de diseño. La impresión se presupuesta aparte si la necesitáis.</p>
+      <a class="button" href="#contacto">Pedir presupuesto</a>
+    </div>
+    <PriceList class="loose-list" title="Para bodas" items={weddingPrices} />
+  </div>
 </section>
 
 <style>
-  .packs {
-    display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    gap: 3rem var(--gutter);
-    align-items: start;
-  }
-  .packs-head { position: sticky; top: 2rem; }
-  .packs-head p { margin-top: 1.25rem; max-width: 30ch; }
-  .packs-head .button { margin-top: 2rem; }
+  .packs-head { max-width: 46rem; }
+  .packs-head p { margin-top: 1.25rem; max-width: 52ch; }
 
   .cards {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem 1.25rem;
-    align-items: start;
+    gap: 1.75rem clamp(1rem, 2vw, 1.75rem);
+    align-items: center;
+    margin-top: clamp(3rem, 6vw, 4.5rem);
   }
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
-    padding: 1.75rem 1.5rem 1.4rem;
+    padding: 2rem 1.75rem 1.75rem;
     border-radius: var(--cut);
     rotate: var(--tilt);
     transition: rotate 300ms var(--ease-out);
@@ -98,30 +90,70 @@ const packs = [
   @media (hover: hover) and (pointer: fine) {
     .card:hover { rotate: 0deg; }
   }
-  .featured { grid-row: span 2; }
-  .card:nth-child(4) { margin-top: -1rem; }
+  .featured {
+    z-index: 1;
+    padding-block: 3rem 2.25rem;
+    box-shadow: 0 2px 4px rgb(46 27 33 / 0.12), 0 30px 60px -28px rgb(46 27 33 / 0.55);
+    scale: 1.04;
+  }
+  .badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% -50%;
+    rotate: -2deg;
+    padding: 0.4rem 1.1rem;
+    background: var(--crimson);
+    color: #fff;
+    font-size: var(--step-small);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    border-radius: var(--cut);
+    box-shadow: 0 6px 14px -8px rgb(46 27 33 / 0.6);
+  }
 
-  .card h3 { font-size: var(--step-lead); line-height: 1.1; }
-  .card .checks { display: grid; gap: 0.4rem; margin-top: 1.1rem; line-height: 1.35; }
-  .card-note { margin-top: 1.25rem; font-size: 1.5rem; color: inherit; opacity: 0.9; }
+  .card-kicker { font-size: var(--step-small); letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.85; }
+  .card h3 { margin-top: 0.2rem; font-size: var(--step-lead); line-height: 1.1; }
+  .tagline { margin-top: 0.6rem; font-style: italic; line-height: 1.35; opacity: 0.92; }
+  .price { display: flex; align-items: baseline; gap: 0.5rem; margin-top: 1.4rem; }
+  .price-from { font-size: var(--step-small); text-transform: uppercase; letter-spacing: 0.12em; }
+  .price-amount { font-size: clamp(2.5rem, 2rem + 1.6vw, 3.25rem); line-height: 1; font-weight: 500; font-variation-settings: 'SOFT' 100, 'WONK' 1; }
+  .per-guest { margin-top: 0.35rem; font-size: var(--step-small); opacity: 0.88; }
+  .card .checks { display: grid; gap: 0.45rem; margin-top: 1.4rem; line-height: 1.35; }
+  .card-cta { margin-top: 1.75rem; align-self: stretch; }
 
+  /* Every pack its own colour, always with white text */
   .tone-crimson { background: var(--crimson); color: #fff; }
-  .tone-crimson .checks li::before { background: #fff; }
   .tone-sage { background: var(--sage); color: #fff; }
-  .tone-sage .checks li::before { background: #fff; }
-  .tone-blush { background: var(--blush); color: var(--ink); }
+  .tone-ink { background: var(--ink); color: #fff; }
+  .tone-sage { text-shadow: 0 1px 2px rgb(46 27 33 / 0.18); }
+  .card .checks li::before { background: #fff; }
+  .tone-ink .checks li::before { background: var(--blush); }
+  .tone-ink .price-amount, .tone-ink .card-kicker { color: var(--blush); }
+  .card-cta.ghost { color: #fff; }
+  @media (hover: hover) and (pointer: fine) {
+    .card-cta.ghost:hover { background: #fff; color: var(--crimson); }
+    .tone-ink .card-cta.ghost:hover { color: var(--ink); }
+  }
+  .tone-sage .card-cta:not(.ghost) { background: var(--crimson); text-shadow: none; }
+
+  .loose {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 2.5rem var(--gutter);
+    align-items: start;
+    margin-top: clamp(4rem, 8vw, 6rem);
+  }
+  .loose-title { font-size: var(--step-lead); line-height: 1.15; }
+  .loose-text p { margin-top: 1rem; max-width: 42ch; }
+  .loose-text .button { margin-top: 1.75rem; }
+  .loose :global(.loose-list) { --price-bg: var(--bg); }
 
   @media (max-width: 64rem) {
-    .packs { grid-template-columns: 1fr; }
-    .packs-head { position: static; }
-  }
-  @media (max-width: 48rem) {
-    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .featured { grid-row: auto; grid-column: 1 / -1; order: -1; }
-    .card:nth-child(4) { margin-top: 0; }
-  }
-  @media (max-width: 30rem) {
-    .cards { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; max-width: 32rem; margin-inline: auto; gap: 3rem; }
+    .featured { order: -1; scale: 1; }
     .card { rotate: calc(var(--tilt) * 0.5); }
+    .loose { grid-template-columns: 1fr; }
   }
 </style>

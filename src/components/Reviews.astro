@@ -1,0 +1,129 @@
+---
+// Real reviews from couples, each beside a print of the piece made for them. The reviews live in
+// src/data/reviews.ts; long ones fold so the cards keep a similar height.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { contact } from '../data/contact';
+import { averageRating, reviews } from '../data/reviews';
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/images/*.{png,jpg,jpeg,webp,avif}', { eager: true });
+const byName = Object.fromEntries(Object.entries(files).map(([path, mod]) => [path.split('/').pop(), mod.default]));
+
+const sourceLabel = { 'bodas.net': 'Bodas.net', google: 'Google' } as const;
+const sourceUrl = { 'bodas.net': contact.bodasNetReviews, google: contact.googleProfile } as const;
+const dateLabel = (iso: string) =>
+  new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+const SHORT = 260;
+const tilts = [-1.6, 1.2, -0.8, 1.6];
+
+const items = reviews.map((r, i) => {
+  const src = byName[r.image];
+  if (!src) throw new Error(`Reviews: no image "${r.image}" in src/assets/images/`);
+  return { ...r, src, tilt: tilts[i % tilts.length], long: r.text.length > SHORT };
+});
+---
+
+<section id="opiniones" class="reviews wrap section" aria-labelledby="reviews-title">
+  <div class="reviews-head">
+    <h2 id="reviews-title" class="head">Lo que dicen las parejas</h2>
+    <p class="score">
+      <span class="stars" aria-hidden="true">★★★★★</span>
+      <span>
+        <strong>{averageRating.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} de 5</strong>
+        en <a class="link" href={contact.bodasNetReviews} target="_blank" rel="noopener noreferrer">Bodas.net</a>,
+        el 100 % de las parejas lo recomienda
+      </span>
+    </p>
+  </div>
+
+  <ul class="review-list">
+    {items.map((r) => (
+      <li class="review">
+        <figure class="print review-print" style={`--tilt:${r.tilt}deg`} data-drop>
+          <span class="tape" style="--tape:var(--sage); top:-0.7rem; left:32%; width:4.5rem"></span>
+          <Image src={r.src} widths={[320, 480]} sizes="(max-width: 36rem) 70vw, 15rem" alt={r.alt} />
+          <figcaption class="note">{r.piece}</figcaption>
+        </figure>
+        <blockquote class="review-body">
+          <p class="review-stars" aria-label={`${r.rating} de 5 estrellas`}>{'★'.repeat(r.rating)}</p>
+          {r.title && <p class="review-title">«{r.title}»</p>}
+          {r.long ? (
+            <details class="review-more">
+              <summary>
+                <span class="review-text">{r.text.slice(0, r.text.lastIndexOf(' ', SHORT))}…</span>
+                <span class="more link">Leer entera</span>
+              </summary>
+              <p class="review-text">{r.text}</p>
+            </details>
+          ) : (
+            <p class="review-text">{r.text}</p>
+          )}
+          <footer class="review-by">
+            <cite>{r.name}</cite>, {dateLabel(r.date)} ·
+            {sourceUrl[r.source] ? (
+              <a class="link" href={sourceUrl[r.source]} target="_blank" rel="noopener noreferrer">{sourceLabel[r.source]}</a>
+            ) : (
+              <span>{sourceLabel[r.source]}</span>
+            )}
+          </footer>
+        </blockquote>
+      </li>
+    ))}
+  </ul>
+
+  <p class="reviews-more">
+    <a class="button ghost" href={contact.bodasNetReviews} target="_blank" rel="noopener noreferrer">Ver las opiniones en Bodas.net</a>
+    {contact.googleProfile && (
+      <a class="button ghost" href={contact.googleProfile} target="_blank" rel="noopener noreferrer">Ver las reseñas en Google</a>
+    )}
+    {contact.googleReviews && (
+      <a class="link" href={contact.googleReviews} target="_blank" rel="noopener noreferrer">¿Ya trabajamos juntos? Dejad vuestra reseña</a>
+    )}
+  </p>
+</section>
+
+<style>
+  .reviews { background: var(--bg); }
+  .reviews-head { max-width: 46rem; }
+  .score { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.75rem; margin-top: 1.25rem; }
+  .stars, .review-stars { color: var(--crimson); letter-spacing: 0.12em; }
+  .stars { font-size: 1.5rem; line-height: 1; }
+
+  .review-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3.5rem clamp(1.25rem, 3vw, 2.5rem);
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+    align-items: start;
+  }
+  .review { display: grid; gap: 1.5rem; }
+  .review-print { width: min(15rem, 80%); justify-self: center; }
+  .review-print img { aspect-ratio: 4 / 5; }
+  .review-print figcaption { text-align: center; font-size: 1.3rem; }
+
+  .review-body { margin: 0; }
+  .review-stars { font-size: 1.1rem; }
+  .review-title { margin-top: 0.35rem; font-size: var(--step-lead); line-height: 1.2; font-style: italic; }
+  .review-text { margin-top: 0.75rem; line-height: 1.55; }
+  .review-by { margin-top: 1rem; font-size: var(--step-small); color: var(--muted); }
+  .review-by cite { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  .review-more summary { list-style: none; cursor: pointer; }
+  .review-more summary::-webkit-details-marker { display: none; }
+  .review-more summary .review-text { display: inline; }
+  .review-more summary .review-text::before { content: ''; display: block; margin-top: 0.75rem; }
+  .more { margin-left: 0.4rem; color: var(--crimson); font-size: var(--step-small); font-weight: 600; }
+  .review-more[open] summary { display: none; }
+
+  .reviews-more { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: clamp(3rem, 6vw, 4rem); }
+
+  @media (max-width: 64rem) {
+    .review-list { grid-template-columns: 1fr; max-width: 40rem; }
+    .review { grid-template-columns: 11rem 1fr; align-items: start; gap: 1.5rem; }
+    .review-print { width: 100%; }
+  }
+  @media (max-width: 36rem) {
+    .review { grid-template-columns: 1fr; }
+    .review-print { width: min(13rem, 70%); }
+  }
+</style>

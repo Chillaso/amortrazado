@@ -1,0 +1,65 @@
+---
+// A printed price list: names on the left, prices on the right joined by a dotted leader, like
+// the brand's own price card. Prices come from src/data/prices.ts.
+import { priceLabel, type PriceItem } from '../data/prices';
+
+interface Props {
+  title: string;
+  items: PriceItem[];
+  class?: string;
+}
+const { title, items, class: className } = Astro.props;
+---
+
+<div class:list={['price-list', className]}>
+  <h3 class="price-title">{title}</h3>
+  <dl>
+    {items.map((i) => (
+      <div class="price-row">
+        <dt>{i.name}{i.note && <span class="price-note"> ({i.note})</span>}</dt>
+        <span class="leader" aria-hidden="true"></span>
+        <dd>{priceLabel(i)}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
+
+<style>
+  .price-list {
+    position: relative;
+    padding: 1.75rem clamp(1.25rem, 3vw, 2rem) 1.5rem;
+    border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
+    font-variant-numeric: tabular-nums;
+  }
+  .price-title {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    translate: 0 -55%;
+    padding-inline: 0.6rem;
+    background: var(--price-bg, var(--paper));
+    font-size: var(--step-small);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-variation-settings: 'SOFT' 50, 'WONK' 0;
+  }
+  dl { display: grid; gap: 0.55rem; margin: 0; }
+  .price-row { display: flex; align-items: baseline; gap: 0.5rem; }
+  dt { flex: 0 1 auto; }
+  .price-note { color: var(--muted); font-size: var(--step-small); }
+  dd { flex: 0 0 auto; margin: 0; font-weight: 600; color: var(--crimson); white-space: nowrap; }
+  dd::first-letter { text-transform: uppercase; }
+  .leader {
+    flex: 1 1 1.5rem;
+    min-width: 1rem;
+    height: 4px;
+    align-self: center;
+    margin-top: 0.4em;
+    background-image: radial-gradient(circle, var(--ink) 1.4px, transparent 1.8px);
+    background-size: 8px 4px;
+    background-repeat: repeat-x;
+    opacity: 0.4;
+  }
+</style>
